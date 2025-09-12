@@ -1,0 +1,70 @@
+#ifndef FOSH_FOSH_HPP
+#define FOSH_FOSH_HPP
+/**---------------------------------------------------------------------------
+ *
+ * @file       fosh.hpp
+ * @brief      Libfosh class
+ *
+ *             This class handles the input. When an command is entered into 
+ *             the command line, the 'commander' is asked to actually exec the 
+ *             command.
+ *
+ * @date       20240821
+ * @author     Maximilian Seesslen <mes@seesslen.net>
+ * @copyright  SPDX-License-Identifier: Apache-2.0
+ *
+ *--------------------------------------------------------------------------*/
+
+
+/*--- Includes -------------------------------------------------------------*/
+
+
+#include <lepto/string.hpp>
+#include <lepto/signal.hpp>
+#include <fosh/commander.hpp>
+
+// Default behaviour: use login prompt
+#if ! defined( CONFIG_FOSH_LOGIN )
+   #define CONFIG_FOSH_LOGIN           1
+#endif
+
+
+/*--- Declaration ----------------------------------------------------------*/
+
+
+class CCommand;
+
+class CFosh
+{
+   private:
+      CString command;
+      CCommander m_commander;
+      
+      #if IS_ENABLED(CONFIG_FOSH_LOGIN)
+      bool m_logedin;
+      #endif
+      
+      #if ! defined( MCU_STM32 )
+      bool m_inputTerminal=true;
+      #endif
+
+   public:
+      CFosh();
+      CSignal <int, int, char *> signalExecCommand;
+
+      void eventLoop();
+
+      void dump(const void *buf, int size);
+      int execCommand();
+      void printPrompt();
+      
+      #if IS_ENABLED(CONFIG_FOSH_LOGIN)
+      void login(const void *buf , int size);
+      #endif
+      
+      void addCommand(const CCommand *pCommand);
+};
+
+
+/*--- Fin ------------------------------------------------------------------*/
+#endif // ! ? FOSH_FOSH_HPP
