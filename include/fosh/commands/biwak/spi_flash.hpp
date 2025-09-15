@@ -17,23 +17,52 @@
 /*--- Includes -------------------------------------------------------------*/
 
 
-#include <fosh/command.hpp>
+#include <fosh/subCommands.hpp>
 #include <biwak/flash_spi.hpp>
 
 
 /*--- Declarations ---------------------------------------------------------*/
 
 
-class CCommandSf: public CCommand
+enum ESfCommand{
+   eNone,
+   eInfo,
+   eDump,
+   eErase,
+   eRead,
+   eWrite,
+   eChipErase,
+   eSearch,
+};
+
+class CCommandSf: public CCommandSubCommands<ESfCommand>
+                  //<ESfCommand>
 {
       CFlashSpi &m_sf;
+      
+      const SSubCommandDesc m_subCommands[6]{
+          (SSubCommandDesc){ eInfo, "info", "Show information", 0, 0 },
+          (SSubCommandDesc){ eDump, "dump", "Dump part of erase block", 1, 1, "<block>" },
+          (SSubCommandDesc){ eWrite, "write", "Write pattern to block", 1, 1, "<block>" },
+          (SSubCommandDesc){ eChipErase, "chiperase", "Erase the whole chip", 0, 0},
+          (SSubCommandDesc){ eSearch, "search", "Search for nonempty page", 0, 0},
+          (SSubCommandDesc){ eInfo, nullptr, nullptr, 0, 0 },
+      };
+      
    public:
       CCommandSf(const char *_name, CFlashSpi &sf)
-         :CCommand( _name, "   sf: access spi flash\n" )
+         :CCommandSubCommands( _name, "Access spi flash" )
          ,m_sf(sf)
-      {}
-      virtual int exec(int argc, const char *argv[]) const;
-      virtual void printHelp() const;
+      {
+         setSubcommands(m_subCommands);
+      }
+      virtual int execSubCommand(ESfCommand command, int argc, const char *argv[]) const;
+      
+      int info() const;
+      int dump(int argc, const char* argv[]) const;
+      int write(int argc, const char* argv[]) const;
+      int search() const;
+      int chipErase() const;
 };
 
 

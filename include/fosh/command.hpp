@@ -34,9 +34,13 @@ class CCommand
       {
          return(m_pName);
       }
+      const char*getHelpString() const
+      {
+         return(m_pHelpString);
+      }
 
       virtual int exec(int argc, const char * argv[]) const = 0;
-      void printHelp() const;
+      virtual void printHelp() const;
 };
 
 

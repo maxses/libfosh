@@ -13,6 +13,7 @@ set(
       src/fosh.cpp
       src/commander.cpp
       src/command.cpp
+      src/subCommands.cpp
       src/commands/signal.cpp
       src/commands/exit.cpp
 )

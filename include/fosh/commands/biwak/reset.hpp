@@ -17,7 +17,7 @@
 /*--- Includes -------------------------------------------------------------*/
 
 
-#include <fosh/command.h>
+#include <fosh/command.hpp>
 #include <stdlib.h>
 #include <HALWrapper/stm32_hal.h>
 
@@ -32,10 +32,6 @@ class CCommandReset: public CCommand
          :CCommand( _name, "Reset device" )
       {}
       virtual int exec(int argc, const char *argv[]) const;
-      virtual void printHelp() const
-      {
-         printf("Usage: \n");
-      }
 };
 
 

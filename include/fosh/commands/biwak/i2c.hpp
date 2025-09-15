@@ -45,7 +45,6 @@ class CCommandI2c: public CCommand
       {}
       virtual int exec(int argc, const char *argv[]) const;
       void dump(const CI2cSlave &slave) const;
-      virtual void printHelp() const;
 };
 
 
