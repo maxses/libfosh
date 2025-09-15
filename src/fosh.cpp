@@ -19,6 +19,7 @@
 
 #include <fosh/fosh.hpp>
 #include <fosh/commander.hpp>
+#include <lepto/ansi.h>
 
 #if defined ( HOST )  || ! defined( STM32 )
    #include <termios.h>       // tcgetattr
@@ -128,40 +129,144 @@ void CFosh::eventLoop()
    {
       // Returns EOF if no data is available (Linux, Biwak)
       //in=getchar();
-      in=fgetc(stdin);
-      switch(in)
+      in=getc(stdin);
+
+      /* Needed for debugging */
+      #if 0
+      if( in != EOF )
       {
-         case '\r':     // STM32
-         case '\n':     // Linux
-         {
-            fputs("\r\n", stdout);
-            if( command.length() )
+         printf("Input: 0x%X\n", in);
+      }
+      #endif
+
+      if( in != -1 )
+      {
+         #if IS_ENABLED( CONFIG_FOSH_CATCH_ANSI )
+            switch(m_mode)
             {
-               int sta=execCommand();
-               if(sta)
-               {
-                  lCritical( LDS("ExCo %d", "Error executing command: sta=%d"), sta);
-               }
+               case EMode::normal:
+                  handleChar(in);
+                  break;
+               case EMode::preAnsi:
+                  handlePreAnsi(in);
+                  break;
+               case EMode::ansi:
+                  handleAnsi(in);
+                  break;
+               default:
+                  lCritical( LDS("UKM %d", "Unknown mode: %d"), m_mode);
+                  break;
             }
-            command.clear();
-            printPrompt();
-            break;
-         }
-         case EOF:
-            break;
-         case 0:
-            // Decode not finished
-            break;
-         default:
-            command+=(char)in;
-            putchar(in);
-      };
+         #else
+            handleChar(in);
+         #endif // CONFIG_FOSH_CATCH_ANSI
+      }
    }
    while( in != EOF );
 
    return;
 };
 
+
+void CFosh::handleChar(int in)
+{
+   switch(in)
+   {
+      case '\r':     // STM32
+      case '\n':     // Linux
+      {
+         fputs("\r\n", stdout);
+         if( command.length() )
+         {
+            int sta=execCommand();
+            if(sta)
+            {
+               lCritical( LDS("ExCo %d", "Error executing command: sta=%d"), sta);
+            }
+         }
+         command.clear();
+         printPrompt();
+         break;
+      }
+      case EOF:
+         break;
+      case 0:
+         // Decode not finished
+         break;
+      case 0x7f:
+         if( command.length() )
+         {
+            command.remove(-1,1);
+            fputs(ANSI_DELETE " " ANSI_DELETE, stdout);
+         }
+         break;
+      #if IS_ENABLED( CONFIG_FOSH_CATCH_ANSI )
+      case 0x1B: // ESC
+      {
+         m_mode=EMode::preAnsi;
+         break;
+      }
+      #endif // CONFIG_FOSH_CATCH_ANSI
+      default:
+         command+=(char)in;
+         putchar(in);
+   };
+   return;
+}
+
+#if IS_ENABLED( CONFIG_FOSH_CATCH_ANSI )
+
+void CFosh::handlePreAnsi(int in)
+{
+   switch( in )
+   {
+      case '[':
+      {
+         m_mode=EMode::ansi;
+         break;
+      }
+      default:
+         m_mode=EMode::normal;
+         printf("UK1:0x%X\n", in);
+         break;
+   };
+   return;
+}
+
+
+void CFosh::handleAnsi(int in)
+{
+   switch( in )
+   {
+      case 'D': // Left cursor
+      {
+         m_mode=EMode::normal;
+         break;
+      }
+      case 'C': // Right cursor
+      {
+         m_mode=EMode::normal;
+         break;
+      }
+      case 'A': // Up cursor
+      {
+         m_mode=EMode::normal;
+         break;
+      }
+      case 'B': // Down cursor
+      {
+         m_mode=EMode::normal;
+         break;
+      }
+      default:
+         m_mode=EMode::normal;
+         printf("ANSI:0x%X / '%c'\n", in, in);
+         break;
+   };
+   return;
+}
+
+#endif // CONFIG_FOSH_CATCH_ANSI
 
 int CFosh::execCommand()
 {

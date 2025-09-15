@@ -48,11 +48,27 @@ class CFosh
       bool m_inputTerminal=true;
       #endif
 
+      #if IS_ENABLED( CONFIG_FOSH_CATCH_ANSI )
+      enum class EMode{
+         normal,
+         preAnsi,
+         ansi
+      };
+      EMode m_mode=EMode::normal;
+      #endif // CONFIG_FOSH_CATCH_ANSI
+
+
    public:
       CFosh();
       CSignal <int, int, char *> signalExecCommand;
 
       void eventLoop();
+
+      void handleChar(int c);
+      #if IS_ENABLED( CONFIG_FOSH_CATCH_ANSI )
+      void handlePreAnsi(int c);
+      void handleAnsi(int c);
+      #endif // CONFIG_FOSH_CATCH_ANSI
 
       void dump(const void *buf, int size);
       int execCommand();

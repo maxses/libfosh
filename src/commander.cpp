@@ -62,7 +62,7 @@ int CCommander::execCommand( int argc, const char *argv[] )
 
       if( !executed )
       {
-         fputs("Could not find command '", stdout);
+         fputs( LDS("CNFC", "Could not find command '"), stdout);
          fputs(argv[0], stdout);
          fputs("'\n", stdout);
       }
