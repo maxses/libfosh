@@ -23,6 +23,7 @@
 #include <string.h>     // strncpy
 #include <sys/time.h>   // settimeofday
 #include <stdlib.h>      // atoi
+#include <lepto/log.h>
 
 #ifdef STM32
    //#include <arena/platform.h>
@@ -53,7 +54,7 @@ int CCommandTime::getTime() const
    //printf("%s\n", s);0x63FA0B70
    if(!tm)
    {
-      printf("Could not create time\n");
+      printf( LDS("CNCT\n", "Could not create time\n") );
       return(-1);
    }
    else

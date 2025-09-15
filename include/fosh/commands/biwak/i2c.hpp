@@ -40,7 +40,7 @@ class CCommandI2c: public CCommand
       CI2c &m_i2c;
    public:
       CCommandI2c(const char *_name, CI2c &i2c)
-         :CCommand( _name, "   i2c: scan devices\n" )
+         :CCommand( _name, "Scan/dump devices on bus" )
          ,m_i2c(i2c)
       {}
       virtual int exec(int argc, const char *argv[]) const;
