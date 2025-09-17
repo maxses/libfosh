@@ -111,6 +111,8 @@ int CCommandSubCommands<EEnum>::exec(int argc, const char *argv[]) const /* virt
 template <typename EEnum>
 void CCommandSubCommands<EEnum>::printHelp() const /* virtual  */
 {
+   int cnt;
+   
    #if IS_ENABLED( CONFIG_LEPTO_LOG_DOWNSIZE )
       fputs( "   ", stdout );
       fputs( getName(), stdout );
@@ -129,33 +131,32 @@ void CCommandSubCommands<EEnum>::printHelp() const /* virtual  */
       fputs( getHelpString(), stdout );
       fputs("\n", stdout);
    #else
-   int cnt;
-   cnt+=printf( "   %s",getName());
-   /*
-   if( m_subCommands[i1].argumentsHelpString )
-   {
-      cnt+=printf("%s", m_subCommands[i1].argumentsHelpString);
-   }
-   else
-   */
-   {
-      cnt+=printf( " [ " );
-      for(int i1=0; m_subCommands[i1].name; i1++)
+      cnt+=printf( "   %s",getName());
+      /*
+      if( m_subCommands[i1].argumentsHelpString )
       {
-         if( i1 )
-         {
-            cnt+=printf( "| " );
-         }
-         cnt+=printf( "%s ", m_subCommands[i1].name );
+         cnt+=printf("%s", m_subCommands[i1].argumentsHelpString);
       }
-      cnt+=printf( "]");
-   }
-   
-   for(int i1=0; i1<25-cnt; i1++ )
-   {
-      printf(" ");
-   }
-   printf( "%s\n", getHelpString() );
+      else
+      */
+      {
+         cnt+=printf( " [ " );
+         for(int i1=0; m_subCommands[i1].name; i1++)
+         {
+            if( i1 )
+            {
+               cnt+=printf( "| " );
+            }
+            cnt+=printf( "%s ", m_subCommands[i1].name );
+         }
+         cnt+=printf( "]");
+      }
+      
+      for(int i1=0; i1<25-cnt; i1++ )
+      {
+         printf(" ");
+      }
+      printf( "%s\n", getHelpString() );
    #endif
    
    for(int i1=0; m_subCommands[i1].name; i1++)
