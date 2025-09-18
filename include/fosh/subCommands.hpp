@@ -111,7 +111,7 @@ int CCommandSubCommands<EEnum>::exec(int argc, const char *argv[]) const /* virt
 template <typename EEnum>
 void CCommandSubCommands<EEnum>::printHelp() const /* virtual  */
 {
-   int cnt;
+   int cnt=0;
    
    #if IS_ENABLED( CONFIG_LEPTO_LOG_DOWNSIZE )
       fputs( "   ", stdout );
