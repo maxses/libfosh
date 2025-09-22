@@ -33,10 +33,6 @@ class CCommandClear: public CCommand
          :CCommand( _name, "Clear screen" )
       {}
       virtual int exec(int argc, const char *argv[]) const;
-      virtual void printHelp() const
-      {
-         printf("Usage: \n");
-      }
 };
 
 
