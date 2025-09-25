@@ -15,7 +15,7 @@
 /*--- Includes -------------------------------------------------------------*/
 
 
-#define LEPTO_LOG_DEBUG 1
+// #define LEPTO_LOG_DEBUG 1
 
 #include <fosh/commands/biwak/sd.hpp>
 #include <lepto/log.h>
@@ -67,7 +67,7 @@ int CCommandSd::exec(int argc, const char *argv[]) const /* virtual */
          break;
       }
    }
-   printf("%s: unknown option '%s'\n", getName(), argv[1]);
+   printf("%s: Unknown option '%s'\n", getName(), argv[1]);
    printf("\nUsage:\n");
    printHelp();
    return( -1 );
@@ -130,6 +130,9 @@ int CCommandSd::execSubCommand(int id, int argc, const char *argv[]) const /* vi
       }
       case ESubCommands::scan:
          sta=commandScan( );
+         break;
+      case ESubCommands::test:
+         sta=commandTest( );
          break;
       default:
       {
@@ -223,6 +226,58 @@ int CCommandSd::commandScan( ) const
    return(sta);
 }
 
+/**
+ * @brief Test is data can be written or write is protected.
+ * 
+ *        If data could be written the origin data is restored.
+ *        
+ * @return 0
+ */
+int CCommandSd::commandTest( ) const
+{
+   const char* str="Hello World to be tested";
+   char buf[ strlen(str) /*24*/];
+   int sta;
+   if( ( sta=m_sd.read( m_data, 0, 1) ) )
+   {
+         lWarning("Error reading data: %d", sta);
+         return( sta );
+   }
+   if( !memcmp(m_data, str, strlen( str ) ) )
+   {
+      lFatal("Not handled");
+   }
+   memcpy( buf, m_data, strlen(str) );
+   memcpy( m_data, str, strlen(str) );
+   if( (sta=m_sd.write( m_data, 0, 1) ) )
+   {
+      lWarning("Error writing data: %d", sta);
+      return( sta );
+   }
+   if( (sta=sta=m_sd.read( m_data, 0, 1) ) )
+   {
+      lWarning("Error reading data: %d", sta);
+      return( sta );
+   }
+   if( ! memcmp( m_data, buf, strlen(str) ) )
+   {
+      printf("Error: Data is still origin. Write did not do anything.\n");
+      return( sta );
+   }
+   if( ! memcmp( m_data, str, strlen(str) ) )
+   {
+      printf("Ok, writing worked as expected.\n");
+   }
+   else
+   {
+      printf("Error: Data is neithor origin or expected change.\n");
+   }
+   
+   memcpy( m_data, buf, strlen(str) );
+   sta=m_sd.write( m_data, 0, 1);
+      
+   return( sta );
+}
 
 void CCommandSd::printHelp() const
 {

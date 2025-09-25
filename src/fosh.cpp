@@ -181,7 +181,8 @@ void CFosh::handleChar(int in)
             int sta=execCommand();
             if(sta)
             {
-               lCritical( LDS("ExCo %d", "Error executing command: sta=%d"), sta);
+               // Don't make it an error. Its just an command that failed.
+               lInfo( LDS("ExCo %d", "Error exec. command: %d"), sta);
             }
          }
          command.clear();
