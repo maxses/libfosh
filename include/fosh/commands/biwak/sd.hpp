@@ -35,6 +35,7 @@ class CCommandSd: public CCommand
          read,
          info,
          scan,
+         test,
       };
 
       static constexpr struct SSubCommands
@@ -52,6 +53,7 @@ class CCommandSd: public CCommand
          { "read" , (int)ESubCommands::read, 0, 1, "[block]", "read single block"},
          { "info" , (int)ESubCommands::info, 0, 0, "", "Show sd card info"},
          { "scan" , (int)ESubCommands::scan, 0, 0, "", "Scan whole card"},
+         { "test" , (int)ESubCommands::test, 0, 1, "[block]", "Test writing data"},
       };
 
       static uint8_t m_data[0x200];
@@ -66,8 +68,9 @@ class CCommandSd: public CCommand
       int commandErase( int block ) const;
       int commandWrite( int block ) const;
       int commandRead( int block, bool dump=true ) const;
-      int commandInfo(  ) const;
-      int commandScan(  ) const;
+      int commandInfo( ) const;
+      int commandScan( ) const;
+      int commandTest( ) const;
       int optArg(int &dest, int argPos, int argc, const char *argv[]) const;
       virtual void printHelp() const;
 };
