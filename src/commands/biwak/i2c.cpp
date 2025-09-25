@@ -36,7 +36,14 @@ int CCommandI2c::exec(int argc, const char *argv[]) const /* virtual */
          slave.setAddressWidth( CI2cSlave::EAddressSize::_8Bits );
          dump( slave );
       }
-
+      
+      if( !strcmp(argv[1], "d16") )
+      {
+         slave.setSlaveAddress(0x50);
+         slave.setAddressWidth( CI2cSlave::EAddressSize::_16Bits );
+         dump( slave );
+      }
+      
       if( argv[1][0]== 'w')
       {
          slave.i2cWriteData( 0, "Hello World", 11);
