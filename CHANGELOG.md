@@ -1,3 +1,10 @@
+# Changer for v0.2.13
+
+* Command i2c: Added subcommand d16
+* [#350] Implement generic subcommands
+* [#683] Add support for backspace key
+* Minor fixes
+
 # Changes for v0.2.12
 
 * fixed compile issues
