@@ -64,11 +64,16 @@ int CCommandTime::getTime() const
    printf("%d.%d.%d %02d:%02d:%02d (DST:%d) \n"
           , (int)tm->tm_mday, (int)tm->tm_mon+1, (int)tm->tm_year + 1900
           , (int)tm->tm_hour, (int)tm->tm_min, (int)tm->tm_sec, (tm->tm_isdst ? 1 : 0) );
-   printf("Epoch: 0x%llX\n", t );
+   // format "%lld" may not be supported
+   printf("Epoch1: 0x%X:0x%X\n", t );
+   // Same as above but may increase binary size
+   //printf("Epoch1: 0x%X:0x%X\n", (int)(t>>32), (int)t );
+   static_assert( sizeof(t)==8, "W");
 
    timeval tv;
    gettimeofday(&tv, 0);
-   printf("Epoch2: 0x%llX\n", tv.tv_sec);
+   // format "%lld" may not be supported
+   printf("Epoch2: 0x%X:0x%X\n", tv.tv_sec);
 
    return(0);
 }
