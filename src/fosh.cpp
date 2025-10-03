@@ -194,7 +194,8 @@ void CFosh::handleChar(int in)
       case 0:
          // Decode not finished
          break;
-      case 0x7f:
+      case 0x08:  // Backspace;  0x8 in Minicom
+      case 0x7f:  //             0x7F in TIO
          if( command.length() )
          {
             command.remove(-1,1);
