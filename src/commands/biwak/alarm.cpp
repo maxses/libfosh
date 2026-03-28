@@ -89,7 +89,11 @@ int CCommandAlarm::setAlarm(const char* dataStr) const // format like YYYYMMDD-h
    if( !strcmp(dataStr, "off") )
    {
       printf("Setting alarm off\n");
+      #if defined STM32
       sta=HAL_RTC_DeactivateAlarm( m_rtc.getHandler(), RTC_ALARM_A);
+      #else
+      sta=22;
+      #endif
       return(sta);
    }
    
