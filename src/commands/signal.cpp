@@ -26,7 +26,7 @@
 
 int CCommandSignal::exec(int argc, const char *argv[]) const /* virtual */
 {
-   return( m_signal.emitSignal(argc, argv) );
+   return( m_signal.emitSingle(argc, argv) );
 }
 
 
