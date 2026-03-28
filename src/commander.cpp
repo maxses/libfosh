@@ -41,11 +41,15 @@ int CCommander::execCommand( int argc, const char *argv[] )
 {
    bool executed=false;
    int sta=-1;
+   int matchCount=0;
+   const CCommand *matchCommand=nullptr;
 
    if(argc)
    {
-      if(!strcmp(argv[0], "help"))
+      if( !memcmp(argv[0], "help", strlen(argv[0])) )
+      {
          return( printHelp() );
+      }
 
       // Empty command / line
       if( (!argv[0]) || (!argv[0][0]) )
@@ -58,13 +62,32 @@ int CCommander::execCommand( int argc, const char *argv[] )
             sta=command->exec( argc, argv );
             executed=true;
          }
+         else
+         {
+            if( ! memcmp(argv[0], command->getName(), strlen(argv[0]) ) )
+            {
+               matchCommand=command;
+               matchCount++;
+            }
+         }
       }
 
       if( !executed )
       {
-         fputs( LDS("CNFC", "Could not find command '"), stdout);
-         fputs(argv[0], stdout);
-         fputs("'\n", stdout);
+         if( matchCount == 1 )
+         {
+            // Use full command instead of possible abbreviation
+            argv[0]=matchCommand->getName();
+            
+            sta=matchCommand->exec( argc, argv );
+            executed=true;
+         }
+         else
+         {
+            fputs( LDS("CNFC", "Could not find command '"), stdout);
+            fputs(argv[0], stdout);
+            fputs("'\n", stdout);
+         }
       }
    }
 
