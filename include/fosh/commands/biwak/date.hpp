@@ -36,7 +36,7 @@ class CCommandDate: public CCommand
          ,m_rtc(rtc)
       {}
       virtual int exec(int argc, const char *argv[]) const;
-
+      void usage() const;
       int setDate(const char* dataStr) const;  // format like MMDDYY
       int getDate() const;
 };
