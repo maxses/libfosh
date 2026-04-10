@@ -3,8 +3,7 @@
  * @file       date.cpp
  * @brief      Libfosh command for reading/writing date
  *
- *             Currently the MCUs RTC is used directly. This could be changed 
- *             to use syscalls in the future.
+ *             The MCUs RTC is used directly. For libc functions use 'time'
  *
  *  \date      20240821
  *  \author    Maximilian Seesslen <mes@seesslen.net>
@@ -18,11 +17,6 @@
 
 #include <fosh/command.hpp>
 #include <fosh/commands/biwak/date.hpp>
-#include <stdio.h>
-#include <time.h>       // time.h, localtime, strftime
-#include <string.h>     // strncpy
-#include <sys/time.h>   // settimeofday
-#include <stdlib.h>      // atoi
 
 #ifdef STM32
    //#include <arena/platform.h>
@@ -51,9 +45,20 @@ int CCommandDate::getDate() const
    int hour, minute, second;
    m_rtc.getDate(year, month, day);
    m_rtc.getTime(hour, minute, second);
-   printf("%d.%d.%d %02d:%02d:%02d UTC\n", day, month, year,
-          hour, minute, second);
 
+   #if IS_ENABLED( CONFIG_BIWAK_RTC_LOCALTIME )
+      struct tm ts;
+      m_rtc.getLocalTime( ts );
+      printf("%d.%d.%d %02d:%02d:%02d (%02d:%02d:%02d UTC Y=%d)\n"
+         , ts.tm_mday, ts.tm_mon+1, ts.tm_year+1900
+         , ts.tm_hour, ts.tm_min, ts.tm_sec
+         , hour, minute, second
+         , year);
+   #else
+      printf("%d.%d.%d %02d:%02d:%02d UTC\n", day, month, year,
+          hour, minute, second);
+   #endif
+   
    printf ( m_rtc.isValid() ? "(Valid)\n" : "(Not valid)\n" );
 
    return(0);
@@ -104,8 +109,8 @@ int CCommandDate::setDate(const char* dataStr) const // format like YYYYMMDD-hhm
    
       strncpy(buf, dataStr + 0, 4);
       int year = atoi(buf);
-      //int year = strtol(buf, &end, 10);
-      printf("Buf: %s; %d\n", buf, year);
+      // int year = strtol(buf, &end, 10);
+      // printf("Buf: %s; %d\n", buf, year);
    
       buf[2]=0;
       strncpy(buf, dataStr + 4, 2);
@@ -127,32 +132,26 @@ int CCommandDate::setDate(const char* dataStr) const // format like YYYYMMDD-hhm
       strncpy(buf, dataStr + 1 + 12, 2);
       unsigned short sec = atoi(buf);
    
-      //time_t mytime = time(0);
-      //struct tm* tm_ptr = localtime(&mytime);
-   
-      /*
-      if (tm_ptr)
-      {
-         tm_ptr->tm_mon  = month - 1;
-         tm_ptr->tm_mday = day;
-         tm_ptr->tm_year = year - 1900;
-         tm_ptr->tm_hour = hour;
-         tm_ptr->tm_min  = min;
-         tm_ptr->tm_sec  = sec;
-         tm_ptr->tm_wday = 0;
-         tm_ptr->tm_yday = 0;
-         tm_ptr->tm_isdst = 0;
-   
-         //const struct timeval tv = {mktime(tm_ptr), 0};
-         struct timeval tv = {0, 0};
-         tv.tv_sec=mktime(tm_ptr);
-         printf("Secs: %d\n",(int)tv.tv_sec);
-         sta=settimeofday(&tv, 0);
-      }
-      */
+      // time_t mytime = time(0);
+      // struct tm* tm_ptr = localtime(&mytime);
       printf("Year: %d\n", year);
-      m_rtc.setDate(year, month, day);
-      sta=m_rtc.setTime(hour, min, sec);
+      #if IS_ENABLED( CONFIG_BIWAK_RTC_LOCALTIME )
+         struct tm ts{
+            .tm_sec=sec,
+            .tm_min=min,
+            .tm_hour=hour,
+            .tm_mday=day,
+            .tm_mon=month-1,
+            .tm_year=year-1900,
+            .tm_wday=0,
+            .tm_yday=0,
+            .tm_isdst=0
+         };
+         m_rtc.setLocalTime( ts );
+      #else
+         m_rtc.setDate(year, month, day);
+         sta=m_rtc.setTime(hour, min, sec);
+      #endif
    }
 
    return(sta);

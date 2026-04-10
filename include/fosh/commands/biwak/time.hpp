@@ -5,8 +5,7 @@
  * @file       time.hpp
  * @brief      Libfosh command for getting/setting time
  *
- *             Currently the MCUs RTC is used directly. This could be changed
- *             to use syscalls in the future.
+ *             Libc functions are used.
  *
  *  \date      20240821
  *  \author    Maximilian Seesslen <mes@seesslen.net>
@@ -19,7 +18,6 @@
 
 
 #include <fosh/command.hpp>
-#include <biwak/rtc.hpp>
 
 
 /*--- Declaration ----------------------------------------------------------*/
@@ -28,12 +26,10 @@
 class CCommandTime: public CCommand
 {
    private:
-      CRtc &m_rtc;
 
    public:
-      CCommandTime(const char *_name, CRtc &rtc)
+      CCommandTime(const char *_name /*, CRtc &rtc*/ )
          :CCommand( _name, "time: get/set time and date (libc)" )
-         ,m_rtc(rtc)
       {}
       virtual int exec(int argc, const char *argv[]) const;
 

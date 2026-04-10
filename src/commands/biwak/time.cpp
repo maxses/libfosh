@@ -3,8 +3,7 @@
  * @file       time.cpp
  * @brief      Libfosh command for getting/setting time
  *
- *             Currently the MCUs RTC is used directly. This could be changed
- *             to use syscalls in the future.
+ *             Libc functions are used.
  *
  *  \date      20240821
  *  \author    Maximilian Seesslen <mes@seesslen.net>
@@ -18,17 +17,12 @@
 
 #include <fosh/command.hpp>
 #include <fosh/commands/biwak/time.hpp>
-#include <stdio.h>
-#include <time.h>       // time.h, localtime, strftime
-#include <string.h>     // strncpy
-#include <sys/time.h>   // settimeofday
-#include <stdlib.h>      // atoi
+#include <time.h>             // time.h, localtime, strftime
 #include <lepto/log.h>
-
-#ifdef STM32
-   //#include <arena/platform.h>
-   #include <biwak/rtc.hpp>
-#endif
+#include <stdio.h>
+#include <sys/time.h>         // settimeofday
+#include <string.h>           // strncpy
+#include <stdlib.h>           // atoi
 
 
 /*--- Implementation -------------------------------------------------------*/
@@ -49,32 +43,22 @@ int CCommandTime::getTime() const
 {
    time_t t = time( nullptr );
    struct tm *tm = localtime(&t);
-   //char s[64];
-   //strftime(s, sizeof(s), "%c", tm);
-   //printf("%s\n", s);0x63FA0B70
+   
    if(!tm)
    {
       printf( LDS("CNCT\n", "Could not create time\n") );
       return(-1);
    }
-   else
-   {    
-      printf("ptr: %p\n", tm);
-   }
+
    printf("%d.%d.%d %02d:%02d:%02d (DST:%d) \n"
           , (int)tm->tm_mday, (int)tm->tm_mon+1, (int)tm->tm_year + 1900
           , (int)tm->tm_hour, (int)tm->tm_min, (int)tm->tm_sec, (tm->tm_isdst ? 1 : 0) );
-   // format "%lld" may not be supported
-   printf("Epoch1: 0x%X:0x%X\n", t );
-   // Same as above but may increase binary size
-   //printf("Epoch1: 0x%X:0x%X\n", (int)(t>>32), (int)t );
+   
    static_assert( sizeof(t)==8, "W");
 
    timeval tv;
    gettimeofday(&tv, 0);
-   // format "%lld" may not be supported
-   printf("Epoch2: 0x%X:0x%X\n", tv.tv_sec);
-
+   
    return(0);
 }
 
@@ -97,8 +81,6 @@ int CCommandTime::setTime(const char* dataStr) const // format like YYYYMMDD-hhm
 
    strncpy(buf, dataStr + 0, 4);
    int year = atoi(buf);
-   //int year = strtol(buf, &end, 10);
-   printf("Buf: %s; %d\n", buf, year);
 
    buf[2]=0;
    strncpy(buf, dataStr + 4, 2);
@@ -120,10 +102,9 @@ int CCommandTime::setTime(const char* dataStr) const // format like YYYYMMDD-hhm
    strncpy(buf, dataStr + 1 + 12, 2);
    unsigned short sec = atoi(buf);
 
-   //time_t mytime = time(0);
-   //struct tm* tm_ptr = localtime(&mytime);
-
-   /*
+   time_t mytime = time(0);
+   struct tm* tm_ptr = localtime(&mytime);
+   
    if (tm_ptr)
    {
       tm_ptr->tm_mon  = month - 1;
@@ -139,14 +120,10 @@ int CCommandTime::setTime(const char* dataStr) const // format like YYYYMMDD-hhm
       //const struct timeval tv = {mktime(tm_ptr), 0};
       struct timeval tv = {0, 0};
       tv.tv_sec=mktime(tm_ptr);
-      printf("Secs: %d\n",(int)tv.tv_sec);
+
       sta=settimeofday(&tv, 0);
    }
-   */
-   printf("Year: %d\n", year);
-   m_rtc.setTime(year, month, day);
-   m_rtc.setTime(hour, min, sec);
-
+   
   return(sta);
 } 
 

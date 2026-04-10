@@ -5,8 +5,7 @@
  * @file       date.hpp
  * @brief      Libfosh command for reading/writing date
  *
- *             Currently the MCUs RTC is used directly. This could be changed 
- *             to use syscalls in the future.
+ *             The MCUs RTC is used directly. For libc functions use 'time'
  *
  *  \date      20240821
  *  \author    Maximilian Seesslen <mes@seesslen.net>

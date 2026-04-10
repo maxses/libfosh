@@ -46,11 +46,22 @@ int CCommandAlarm::getAlarm() const
 {
    int year, month, day;
    int hour, minute, second;
-   m_rtc.getDate(year, month, day);
-   m_rtc.getAlarmTime(hour, minute, second);
-   printf("%d.%d.%d %02d:%02d:%02d UTC\n", day, month, year,
-          hour, minute, second);
    
+   m_rtc.getAlarmTime(hour, minute, second);
+   
+   #if IS_ENABLED( CONFIG_BIWAK_RTC_LOCALTIME )
+      struct tm ts;
+      m_rtc.getLocalAlarmTime( ts );
+      printf("%d.%d.%d %02d:%02d:%02d (%02d:%02d:%02d UTC)\n"
+             , ts.tm_mday, ts.tm_mon+1, ts.tm_year+1900
+             , ts.tm_hour, ts.tm_min, ts.tm_sec
+             , hour, minute, second);
+   #else
+      m_rtc.getDate(year, month, day);
+      printf("%d.%d.%d %02d:%02d:%02d UTC\n", day, month, year,
+             hour, minute, second);
+   #endif
+      
    if( m_rtc.isAlarmTriggered() )
    {
       printf ( "Warning: Alarm already triggered\n" );
@@ -131,8 +142,23 @@ int CCommandAlarm::setAlarm(const char* dataStr) const // format like YYYYMMDD-h
       buf[2]=0;
       strncpy(buf, dataStr + 4, 2);
       sec = atoi(buf);
-   
-      m_rtc.setAlarm(hour, min, sec);
+      
+      #if IS_ENABLED( CONFIG_BIWAK_RTC_LOCALTIME )
+         struct tm ts{
+             .tm_sec=sec,
+             .tm_min=min,
+             .tm_hour=hour,
+             .tm_mday=0,
+             .tm_mon=0,
+             .tm_year=0,
+             .tm_wday=0,
+             .tm_yday=0,
+             .tm_isdst=0
+         };
+         m_rtc.setLocalAlarmTime( ts );
+      #else
+         m_rtc.setAlarm(hour, min, sec);
+      #endif
    }
 
   return(sta);
