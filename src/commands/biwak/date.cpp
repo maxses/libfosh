@@ -41,19 +41,25 @@ int CCommandDate::exec(int argc, const char *argv[]) const /* virtual */
 
 int CCommandDate::getDate() const
 {
+   #if ! IS_ENABLED( CONFIG_BIWAK_RTC_LOCALTIME )
    int year, month, day;
    int hour, minute, second;
    m_rtc.getDate(year, month, day);
    m_rtc.getTime(hour, minute, second);
+   #endif
 
    #if IS_ENABLED( CONFIG_BIWAK_RTC_LOCALTIME )
       struct tm ts;
       m_rtc.getLocalTime( ts );
-      printf("%d.%d.%d %02d:%02d:%02d (%02d:%02d:%02d UTC Y=%d)\n"
+      printf("%d.%d.%d %02d:%02d:%02d"
          , ts.tm_mday, ts.tm_mon+1, ts.tm_year+1900
-         , ts.tm_hour, ts.tm_min, ts.tm_sec
-         , hour, minute, second
-         , year);
+             , ts.tm_hour, ts.tm_min, ts.tm_sec );
+      #if 0
+         printf("(%02d:%02d:%02d)"
+            , hour, minute, second);
+      #endif
+      printf("\n");
+
    #else
       printf("%d.%d.%d %02d:%02d:%02d UTC\n", day, month, year,
           hour, minute, second);

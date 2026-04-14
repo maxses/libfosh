@@ -44,18 +44,26 @@ int CCommandAlarm::exec(int argc, const char *argv[]) const /* virtual */
 
 int CCommandAlarm::getAlarm() const
 {
-   int year, month, day;
+   #if ! IS_ENABLED( CONFIG_BIWAK_RTC_LOCALTIME )
    int hour, minute, second;
    
    m_rtc.getAlarmTime(hour, minute, second);
+   #endif
    
    #if IS_ENABLED( CONFIG_BIWAK_RTC_LOCALTIME )
       struct tm ts;
       m_rtc.getLocalAlarmTime( ts );
-      printf("%d.%d.%d %02d:%02d:%02d (%02d:%02d:%02d UTC)\n"
+      printf("%d.%d.%d %02d:%02d:%02d"
              , ts.tm_mday, ts.tm_mon+1, ts.tm_year+1900
-             , ts.tm_hour, ts.tm_min, ts.tm_sec
+             , ts.tm_hour, ts.tm_min, ts.tm_sec );
+
+      #if 0
+         printf(" (%02d:%02d:%02d UTC)"
              , hour, minute, second);
+      #endif
+      
+      printf("\n");
+
    #else
       m_rtc.getDate(year, month, day);
       printf("%d.%d.%d %02d:%02d:%02d UTC\n", day, month, year,
@@ -66,9 +74,6 @@ int CCommandAlarm::getAlarm() const
    {
       printf ( "Warning: Alarm already triggered\n" );
    }
-   
-   //printf("Alarm is %sarmed\n", m_rtc.isAlarmActive() ? "" : "not " );
-   //printf ( "ISR: 0x%X\n", m_rtc.getIsr() );
 
    return(0);
 }
