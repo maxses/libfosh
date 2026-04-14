@@ -21,6 +21,7 @@
 
 #include <lepto/string.hpp>
 #include <lepto/signal.hpp>
+#include <lepto/eventLoop.hpp>
 #include <fosh/commander.hpp>
 
 // Default behaviour: use login prompt
@@ -34,7 +35,7 @@
 
 class CCommand;
 
-class CFosh
+class CFosh: public CEventLoop
 {
    private:
       CString command;
@@ -62,7 +63,7 @@ class CFosh
       CFosh();
       CSignal <int, int, char *> signalExecCommand;
 
-      void eventLoop();
+      virtual_eventLoop void eventLoop() override_eventLoop;
 
       void handleChar(int c);
       #if IS_ENABLED( CONFIG_FOSH_CATCH_ANSI )
