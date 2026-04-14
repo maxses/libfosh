@@ -65,9 +65,7 @@ int CCommandAlarm::getAlarm() const
       printf("\n");
 
    #else
-      m_rtc.getDate(year, month, day);
-      printf("%d.%d.%d %02d:%02d:%02d UTC\n", day, month, year,
-             hour, minute, second);
+      printf("%02d:%02d:%02d UTC\n", hour, minute, second);
    #endif
       
    if( m_rtc.isAlarmTriggered() )
