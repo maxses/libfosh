@@ -14,6 +14,7 @@ set(
       src/commander.cpp
       src/command.cpp
       src/subCommands.cpp
+      src/allCommands.cpp
       src/commands/signal.cpp
       src/commands/exit.cpp
 )
@@ -21,6 +22,11 @@ set(
 set(
    libfosh_HEADERS
       include/fosh/fosh.hpp
+      include/fosh/allCommands.hpp
+      include/fosh/commands/log.hpp
+      include/fosh/commands/clear.hpp
+      include/fosh/commands/exit.hpp
+      include/fosh/commands/signal.hpp
 )
 
 if( USE_BIWAK )
