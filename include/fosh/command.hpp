@@ -51,7 +51,7 @@ class CCommand
    public:
       CCommand(const char *name, const char *helpString);
       ~CCommand()=default;
-      const char*getName( int index ) const
+      const char*getName( int index = 0 ) const
       {
          #if IS_ENABLED( CONFIG_FOSH_COMMAND_ALIASES )
          if(!index)

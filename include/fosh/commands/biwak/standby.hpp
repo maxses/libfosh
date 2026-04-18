@@ -46,7 +46,9 @@ int CCommandStandby::exec(int argc, const char *argv[]) const /* virtual */
       __HAL_RCC_TIM2_CLK_DISABLE();
       __HAL_RCC_I2C1_CLK_DISABLE();
       __HAL_RCC_USART2_CLK_DISABLE();
+      #if defined __HAL_RCC_DBGMCU_CLK_DISABLE
       __HAL_RCC_DBGMCU_CLK_DISABLE();
+      #endif
       __HAL_RCC_SYSCFG_CLK_DISABLE();
       // __HAL_RCC_PWR_CLK_SLEEP_ENABLE();
       HAL_DBGMCU_DisableDBGStandbyMode();
