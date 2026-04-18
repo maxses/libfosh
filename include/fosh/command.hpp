@@ -14,6 +14,12 @@
  *--------------------------------------------------------------------------*/
 
 
+/*--- Includes -------------------------------------------------------------*/
+
+
+#include <lepto/lepto.h>
+
+
 /*--- Declaration ----------------------------------------------------------*/
 
 
@@ -27,12 +33,34 @@ class CCommand
    private:
       const char *m_pName;
       const char *m_pHelpString;
+      //struct SAlias;
+      //const char **m_pAliases;
+      
+   #if IS_ENABLED( CONFIG_FOSH_COMMAND_ALIASES )
+      
+   public:
+      struct SAlias{
+         const char* name;
+         const char* desc;
+      };
+   private:
+      const SAlias *m_pAliases;
+       
+   #endif // ? CONFIG_FOSH_COMMAND_ALIASES
+      
    public:
       CCommand(const char *name, const char *helpString);
       ~CCommand()=default;
-      const char*getName() const
+      const char*getName( int index ) const
       {
+         #if IS_ENABLED( CONFIG_FOSH_COMMAND_ALIASES )
+         if(!index)
+            return(m_pName);
+         
+         return( m_pAliases[index-1].name );
+         #else
          return(m_pName);
+         #endif
       }
       const char*getHelpString() const
       {
@@ -40,7 +68,20 @@ class CCommand
       }
 
       virtual int exec(int argc, const char * argv[]) const = 0;
+      static void printHelp(const char*name, const char*desc);
       virtual void printHelp() const;
+      static bool matches(const char *str, const char *me, bool shortcut=false);
+      int matches(const char *str, bool shortcut=false) const;
+      
+      #if IS_ENABLED( CONFIG_FOSH_COMMAND_ALIASES )
+      
+      CCommand* setAliases( const SAlias aliases[] )
+      {
+         m_pAliases=aliases;
+         return( this );
+      }
+
+      #endif
 };
 
 

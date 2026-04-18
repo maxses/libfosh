@@ -92,7 +92,7 @@ int CCommandSubCommands<EEnum>::exec(int argc, const char *argv[]) const /* virt
          if( ( ( argc -1 ) < m_subCommands[i1].minArgs )
              || ( ( argc -1 ) > m_subCommands[i1].maxArgs ) )
          {
-            printf("%s: invalid amount of arguments\n", getName());
+            printf("%s: invalid amount of arguments\n", getName( 0 ));
             printf("\nUsage:\n");
             printHelp();
             return(-1);
@@ -101,7 +101,7 @@ int CCommandSubCommands<EEnum>::exec(int argc, const char *argv[]) const /* virt
          break;
       }
    }
-   printf("%s: unknown argument '%s'\n", getName(), argv[1]);
+   printf("%s: unknown argument '%s'\n", getName( 0 ), argv[1]);
    printf("\nUsage:\n");
    printHelp();
    return( -1 );
@@ -131,7 +131,7 @@ void CCommandSubCommands<EEnum>::printHelp() const /* virtual  */
       fputs( getHelpString(), stdout );
       fputs("\n", stdout);
    #else
-      cnt+=printf( "   %s",getName());
+      cnt+=printf( "   %s",getName( 0 ));
       /*
       if( m_subCommands[i1].argumentsHelpString )
       {
