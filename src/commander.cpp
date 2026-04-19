@@ -43,6 +43,8 @@ int CCommander::execCommand( int argc, const char *argv[] )
    int sta=-1;
    int matchCount=0;
    const CCommand *matchCommand=nullptr;
+   int commandIndex;
+   int matchCommandIndex;
 
    if(argc)
    {
@@ -55,8 +57,6 @@ int CCommander::execCommand( int argc, const char *argv[] )
       if( (!argv[0]) || (!argv[0][0]) )
          return( 0 );
       
-      int commandIndex;
-
       for (const CCommand *command : commandList)
       {
          if ( ( commandIndex=command->matches( argv[0] ) ) >= 0 )
@@ -70,6 +70,7 @@ int CCommander::execCommand( int argc, const char *argv[] )
             if( ( commandIndex=command->matches( argv[0], true ) ) >= 0 )
             {
                matchCommand=command;
+               matchCommandIndex=commandIndex;
                matchCount++;
             }
          }
@@ -79,10 +80,10 @@ int CCommander::execCommand( int argc, const char *argv[] )
       {
          if( matchCount == 1 )
          {
-            printf("Executing '%s' (Shortcut)\n", matchCommand->getName(commandIndex) );
+            printf("Executing '%s' (Shortcut)\n", matchCommand->getName( matchCommandIndex ) );
             
             // Use full command instead of possible abbreviation
-            argv[0]=matchCommand->getName( commandIndex );
+            argv[0]=matchCommand->getName( matchCommandIndex );
             
             sta=matchCommand->exec( argc, argv );
             executed=true;
