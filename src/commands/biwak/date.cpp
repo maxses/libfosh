@@ -17,6 +17,9 @@
 
 #include <fosh/command.hpp>
 #include <fosh/commands/biwak/date.hpp>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>        // atoi
 
 #ifdef STM32
    //#include <arena/platform.h>
