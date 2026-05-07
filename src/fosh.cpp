@@ -85,7 +85,7 @@ void CFosh::printPrompt()
 {
    #if USE_BIWAK
       // flush buffered logs
-      biwakEventLoop();
+      //biwakEventLoop();
    #endif
 
    #if IS_ENABLED(CONFIG_FOSH_LOGIN)

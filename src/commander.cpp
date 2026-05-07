@@ -41,10 +41,11 @@ int CCommander::execCommand( int argc, const char *argv[] )
 {
    bool executed=false;
    int sta=-1;
-   int matchCount=0;
+   // Making this variables char instead of int saves 140 bytes on miniminutnik
+   char matchCount=0;
    const CCommand *matchCommand=nullptr;
-   int commandIndex;
-   int matchCommandIndex;
+   char commandIndex;
+   char matchCommandIndex;
 
    if(argc)
    {
@@ -99,7 +100,7 @@ int CCommander::execCommand( int argc, const char *argv[] )
 
    #if USE_BIWAK
       // Flush log buffers
-      biwakEventLoop();
+      // logEventLoop();
    #endif
 
    return(sta);

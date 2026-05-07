@@ -61,7 +61,7 @@ class CFosh: public CEventLoop
 
    public:
       CFosh();
-      CSignal <int, int, char *> signalExecCommand;
+      //CSignal <int, int, char *> signalExecCommand;
 
       virtual_eventLoop void eventLoop() override_eventLoop;
 
