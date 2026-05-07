@@ -181,8 +181,10 @@ void CFosh::handleChar(int in)
             int sta=execCommand();
             if(sta)
             {
-               // Don't make it an error. Its just an command that failed.
-               lInfo( LDS("ExCo %d", "Error exec. command: %d"), sta);
+               // Don't make it an error/info. Its just an command that failed.
+               // If command does not exist, CCommander will show error.
+               // If real command has issue, it wil probably print it by itself
+               lDebug( LDS("ExCo %d", "Error exec. command: %d"), sta);
             }
          }
          command.clear();
