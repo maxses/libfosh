@@ -40,12 +40,12 @@ CCommander::CCommander()
 int CCommander::execCommand( int argc, const char *argv[] )
 {
    bool executed=false;
-   int sta=-1;
+   int sta=22;
    // Making this variables char instead of int saves 140 bytes on miniminutnik
-   char matchCount=0;
+   int matchCount=0;
    const CCommand *matchCommand=nullptr;
-   char commandIndex;
-   char matchCommandIndex;
+   int commandIndex;
+   int matchCommandIndex;
 
    if(argc)
    {
@@ -60,15 +60,15 @@ int CCommander::execCommand( int argc, const char *argv[] )
       
       for (const CCommand *command : commandList)
       {
-         if ( ( commandIndex=command->matches( argv[0] ) ) >= 0 )
+         if ( ( commandIndex=command->matchingIndex( argv[0] ) ) >= 0 )
          {
-            printf( "Executing '%s'\n", argv[0] );
+            lDebug( "Executing '%s' index %d\n", argv[0], commandIndex );
             sta=command->exec( argc, argv );
             executed=true;
          }
          else
          {
-            if( ( commandIndex=command->matches( argv[0], true ) ) >= 0 )
+            if( ( commandIndex=command->matchingIndex( argv[0], true ) ) >= 0 )
             {
                matchCommand=command;
                matchCommandIndex=commandIndex;
@@ -81,7 +81,7 @@ int CCommander::execCommand( int argc, const char *argv[] )
       {
          if( matchCount == 1 )
          {
-            printf("Executing '%s' (Shortcut)\n", matchCommand->getName( matchCommandIndex ) );
+            lDebug("Executing '%s' (Shortcut)\n", matchCommand->getName( matchCommandIndex ) );
             
             // Use full command instead of possible abbreviation
             argv[0]=matchCommand->getName( matchCommandIndex );
@@ -91,9 +91,8 @@ int CCommander::execCommand( int argc, const char *argv[] )
          }
          else
          {
-            fputs( LDS("CNFC", "Could not find command '"), stdout);
-            fputs(argv[0], stdout);
-            fputs("'\n", stdout);
+            lDebug( LDS("UKC '%s'", "Unknown command '%s'"), argv[0]);
+            fputs( LDS("Unknown com.\n", "Unknown command\n"), stdout);
          }
       }
    }

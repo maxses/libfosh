@@ -71,7 +71,7 @@ class CCommand
       static void printHelp(const char*name, const char*desc);
       virtual void printHelp() const;
       static bool matches(const char *str, const char *me, bool shortcut=false);
-      int matches(const char *str, bool shortcut=false) const;
+      int matchingIndex(const char *str, bool shortcut=false) const;
       
       #if IS_ENABLED( CONFIG_FOSH_COMMAND_ALIASES )
       

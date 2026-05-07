@@ -91,7 +91,7 @@ bool CCommand::matches(const char *str, const char *me, bool shortcut /*=false*/
 }
 
 
-int CCommand::matches(const char *str, bool shortcut /*=false*/ ) const
+int CCommand::matchingIndex(const char *str, bool shortcut /*=false*/ ) const
 {
    int index=0;
    
