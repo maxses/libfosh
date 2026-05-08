@@ -22,6 +22,7 @@
 #endif
 
 #include <fosh/command.hpp>
+#include <string.h>                    // strcmp()
 
 
 //---Implementation-----------------------------------------------------------
