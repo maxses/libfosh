@@ -33,7 +33,10 @@ class CCommandSignal: public CCommand
       CSignal<int, int, const char *[]> m_signal;
 
    public:
-      /** \brief  Constructor connecting the exec-signal to an function
+      
+      #if IS_ENABLED( CONFIG_LEPTO_SIGNAL_FUNCTION )
+       
+       /** \brief  Constructor connecting the exec-signal to an function
        * 
        *          example: 
        *             new CCommandSignal( "hello", "Hello World"
@@ -44,6 +47,8 @@ class CCommandSignal: public CCommand
       {
          m_signal.connect( _funcPtr);
       }
+      
+      #endif // ? CONFIG_LEPTO_SIGNAL_FUNCTION
       
       /** \brief  Constructor connecting the exec-signal to an object slot
        * 
