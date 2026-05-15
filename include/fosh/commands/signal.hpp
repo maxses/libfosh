@@ -30,7 +30,7 @@
 class CCommandSignal: public CCommand
 {
    private:
-      CSignal<int, int, const char *[]> m_signal;
+      CSignal<int, int, const char **> m_signal;
 
    public:
       
@@ -57,7 +57,7 @@ class CCommandSignal: public CCommand
        *                      , pCanDis, &CCanDis::eraseFlash )
        */
       template <class slotClass >
-      CCommandSignal(const char *_name, const char *desc, slotClass *slotObject, int (slotClass::*_methodPtr)( int, const char *[] ))
+      CCommandSignal(const char *_name, const char *desc, slotClass *slotObject, int (slotClass::*_methodPtr)( int, const char ** ))
           :CCommand( _name, desc )
       {
          m_signal.connect(slotObject, _methodPtr);
