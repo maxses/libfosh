@@ -32,7 +32,7 @@
 #include <lepto/lepto.h>
 
 #if defined USE_BIWAK
-#include <biwak/biwak
+#include <biwak/biwak.h>
 #endif
 
 
