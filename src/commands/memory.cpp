@@ -34,8 +34,8 @@ int CCommandMemory::exec(int argc, const char *argv[]) const /* virtual override
       printf("End RAM   : %p\n", &_eram);
    #endif
       printf("SP        : %p\n", (void*)sp);
-      printf("Stack br  : %p\n", &stackBarrier );
    #if defined( STM32 )
+      printf("Stack br  : %p\n", &stackBarrier );
       printf("Heap end  : %p\n", &__heap_end );
    #endif
       printf("sbrk      : %p\n", sbrk(0));

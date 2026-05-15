@@ -30,7 +30,10 @@
 #endif
 
 #include <lepto/lepto.h>
-#include <biwak/biwak.h>
+
+#if defined USE_BIWAK
+#include <biwak/biwak
+#endif
 
 
 //--- Implementaion ----------------------------------------------------------
@@ -39,7 +42,9 @@
 int main( int argc, char* argv[] )
 {
    leptoInit();
-   biwakInit();
+   #if defined USE_BIWAK
+      biwakInit();
+   #endif
 
    int result = Catch::Session().run( argc, argv );
    return result;
