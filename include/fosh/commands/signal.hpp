@@ -33,6 +33,7 @@ class CCommandSignal: public CCommand
       CSignal<int, int, const char *[]> m_signal;
 
    public:
+
       /** \brief  Constructor connecting the exec-signal to an function
        * 
        *          example: 
