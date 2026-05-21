@@ -17,6 +17,7 @@ set(
       src/allCommands.cpp
       src/commands/signal.cpp
       src/commands/exit.cpp
+      src/commands/memory.cpp
 )
 
 set(
@@ -26,6 +27,7 @@ set(
       include/fosh/commands/log.hpp
       include/fosh/commands/clear.hpp
       include/fosh/commands/exit.hpp
+      include/fosh/commands/memory.hpp
       include/fosh/commands/signal.hpp
 )
 
@@ -117,6 +119,12 @@ target_include_directories(
    PRIVATE
       "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
+
+if ( HOST )
+
+add_subdirectory ( tests )
+
+endif ( NOT HOST )
 
 
 #------------------------------------------------------------------------------

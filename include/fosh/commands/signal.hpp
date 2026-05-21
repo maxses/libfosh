@@ -11,7 +11,7 @@
  *                fosh.addCommand( new CCommandSignal("hello", "Hello world", hello ) );
  *
  * @date       20240821
- * @author     Maximilian Seesslen <mes@seesslen.net>
+ * @author     Maximilian Seesslen <src@seesslen.net>
  * @copyright  SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -30,10 +30,12 @@
 class CCommandSignal: public CCommand
 {
    private:
-      CSignal<int, int, const char *[]> m_signal;
+      CSignal<int, int, const char **> m_signal;
 
    public:
 
+      #if IS_ENABLED( CONFIG_LEPTO_SIGNAL_FUNCTION )
+       
       /** \brief  Constructor connecting the exec-signal to an function
        * 
        *          example: 
@@ -46,6 +48,8 @@ class CCommandSignal: public CCommand
          m_signal.connect( _funcPtr);
       }
       
+      #endif // ? CONFIG_LEPTO_SIGNAL_FUNCTION
+      
       /** \brief  Constructor connecting the exec-signal to an object slot
        * 
        *          example: 
@@ -53,7 +57,7 @@ class CCommandSignal: public CCommand
        *                      , pCanDis, &CCanDis::eraseFlash )
        */
       template <class slotClass >
-      CCommandSignal(const char *_name, const char *desc, slotClass *slotObject, int (slotClass::*_methodPtr)( int, const char *[] ))
+      CCommandSignal(const char *_name, const char *desc, slotClass *slotObject, int (slotClass::*_methodPtr)( int, const char ** ))
           :CCommand( _name, desc )
       {
          m_signal.connect(slotObject, _methodPtr);

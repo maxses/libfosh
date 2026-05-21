@@ -8,7 +8,7 @@
  *             command.
  *
  * @date       20240821
- * @author     Maximilian Seesslen <mes@seesslen.net>
+ * @author     Maximilian Seesslen <src@seesslen.net>
  * @copyright  SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -85,7 +85,7 @@ void CFosh::printPrompt()
 {
    #if USE_BIWAK
       // flush buffered logs
-      biwakEventLoop();
+      //biwakEventLoop();
    #endif
 
    #if IS_ENABLED(CONFIG_FOSH_LOGIN)
@@ -181,8 +181,10 @@ void CFosh::handleChar(int in)
             int sta=execCommand();
             if(sta)
             {
-               // Don't make it an error. Its just an command that failed.
-               lInfo( LDS("ExCo %d", "Error exec. command: %d"), sta);
+               // Don't make it an error/info. Its just an command that failed.
+               // If command does not exist, CCommander will show error.
+               // If real command has issue, it wil probably print it by itself
+               lDebug( LDS("ExCo %d", "Error exec. command: %d"), sta);
             }
          }
          command.clear();

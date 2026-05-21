@@ -6,7 +6,7 @@
  *             Quite trivial.
  *
  *  \date      20240821
- *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \author    Maximilian Seesslen <src@seesslen.net>
  *  \copyright SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -91,7 +91,7 @@ bool CCommand::matches(const char *str, const char *me, bool shortcut /*=false*/
 }
 
 
-int CCommand::matches(const char *str, bool shortcut /*=false*/ ) const
+int CCommand::matchingIndex(const char *str, bool shortcut /*=false*/ ) const
 {
    int index=0;
    

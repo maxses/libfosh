@@ -10,7 +10,7 @@
  *             command.
  *
  * @date       20240821
- * @author     Maximilian Seesslen <mes@seesslen.net>
+ * @author     Maximilian Seesslen <src@seesslen.net>
  * @copyright  SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@ class CFosh: public CEventLoop
 
    public:
       CFosh();
-      CSignal <int, int, char *> signalExecCommand;
+      //CSignal <int, int, char *> signalExecCommand;
 
       virtual_eventLoop void eventLoop() override_eventLoop;
 

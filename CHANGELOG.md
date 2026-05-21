@@ -1,4 +1,18 @@
-# Changer for v0.2.13
+# Changes for v0.3.0
+
+* Avoid message in CFosh on command error
+* Added unit tests
+* Shrink binary size
+* Added command 'memory'
+* Added support for command aliasing
+* Added addAllCommands() function
+* Inherit from CEventLoop
+* CommandSignal: use emitSingle
+* Added commands 'stop' and 'standby'
+* Support abbreviation of commands
+* Added command 'alarm'
+
+# Changes for v0.2.13
 
 * Command i2c: Added subcommand d16
 * [#350] Implement generic subcommands
