@@ -154,7 +154,9 @@ int CCommandDate::setDate(const char* dataStr) const // format like YYYYMMDD-hhm
             .tm_year=year-1900,
             .tm_wday=0,
             .tm_yday=0,
-            .tm_isdst=0
+            .tm_isdst=0,
+            .tm_gmtoff=0,
+            .tm_zone=0,
          };
          m_rtc.setLocalTime( ts );
       #else

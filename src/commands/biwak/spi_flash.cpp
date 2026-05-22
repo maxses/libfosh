@@ -113,7 +113,7 @@ int CCommandSf::search() const
       m_sf.readData( i1 * m_sf.writePageSize(), buf, 0x100 );
       for(int i2=0; i2<0x100; i2++)
       {
-         if( buf[i2] != 0xff )
+         if( (unsigned char)buf[i2] != 0xff )
          {
             printf("Diff: Address %d\n", i1 * m_sf.writePageSize() );
             return(0);

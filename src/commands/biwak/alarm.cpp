@@ -156,7 +156,9 @@ int CCommandAlarm::setAlarm(const char* dataStr) const // format like YYYYMMDD-h
              .tm_year=0,
              .tm_wday=0,
              .tm_yday=0,
-             .tm_isdst=0
+             .tm_isdst=0,
+             .tm_gmtoff=0,
+             .tm_zone=0,
          };
          m_rtc.setLocalAlarmTime( ts );
       #else

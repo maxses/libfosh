@@ -38,6 +38,8 @@ class CCommandTest: public CCommand
       }
       virtual int exec(int argc, const char * argv[]) const override
       {
+         (void)argc;
+         (void)argv;
          return(0);
       }
 };

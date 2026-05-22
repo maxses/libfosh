@@ -173,7 +173,7 @@ void CCommandSubCommands<EEnum>::printHelp() const /* virtual  */
             cnt+=printf("<arg%d> ", i2);
          }
       }
-      for(int i1=0; i1<25-cnt; i1++ )
+      for(int i2=0; i2<25-cnt; i2++ )
       {
          printf(" ");
       }

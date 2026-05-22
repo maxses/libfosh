@@ -29,6 +29,9 @@
 int CCommandMemory::exec(int argc, const char *argv[]) const /* virtual override */
 {
    register long sp asm("sp");
+
+   (void)argc;
+   (void)argv;
    
    #if defined(STM32)
       printf("End RAM   : %p\n", &_eram);

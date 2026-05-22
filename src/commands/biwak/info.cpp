@@ -28,6 +28,9 @@
 
 int CCommandInfo::exec(int argc, const char *argv[]) const /* virtual */
 {
+   (void)argc;
+   (void)argv;
+
    printf("\n");
 
    #if defined STM32
