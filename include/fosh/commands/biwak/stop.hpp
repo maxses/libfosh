@@ -37,6 +37,9 @@ class CCommandStop: public CCommand
 
 int CCommandStop::exec(int argc, const char *argv[]) const /* virtual */
 {
+   lUNUSED( argc );
+   lUNUSED( argv );
+   
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wvolatile"
       

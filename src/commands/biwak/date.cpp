@@ -155,8 +155,14 @@ int CCommandDate::setDate(const char* dataStr) const // format like YYYYMMDD-hhm
             .tm_wday=0,
             .tm_yday=0,
             .tm_isdst=0,
+          
+            #ifdef __TM_GMTOFF
             .tm_gmtoff=0,
+            #endif
+         
+            #ifdef __TM_ZONE
             .tm_zone=0,
+            #endif
          };
          m_rtc.setLocalTime( ts );
       #else

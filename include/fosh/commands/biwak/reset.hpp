@@ -37,6 +37,9 @@ class CCommandReset: public CCommand
 
 int CCommandReset::exec(int argc, const char *argv[]) const /* virtual */
 {
+   lUNUSED( argc );
+   lUNUSED( argv );
+   
    NVIC_SystemReset();
    return(0);
 }
