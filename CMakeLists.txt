@@ -16,6 +16,7 @@ set(
       src/subCommands.cpp
       src/allCommands.cpp
       src/commands/signal.cpp
+      src/commands/function.cpp
       src/commands/exit.cpp
       src/commands/memory.cpp
 )
@@ -29,6 +30,7 @@ set(
       include/fosh/commands/exit.hpp
       include/fosh/commands/memory.hpp
       include/fosh/commands/signal.hpp
+      include/fosh/commands/function.hpp
 )
 
 if( USE_BIWAK )
