@@ -20,7 +20,8 @@
 #include <stdio.h>                    // printf
 #include <unistd.h>                   // sbrk()
 #if USE_BIWAK
-#include <biwak/linker_script.h>
+   #include <biwak/linker_script.h>
+   #include <biwak/memory.h>
 #endif
 
 /*--- Implementation -------------------------------------------------------*/
@@ -44,6 +45,12 @@ int CCommandMemory::exec(int argc, const char *argv[]) const /* virtual override
       printf("sbrk      : %p\n", sbrk(0));
    #if defined( STM32 )
       printf("Heap start: %p\n", &__heap_start );
+   #endif
+      
+   #if defined( STM32 )
+      #if IS_ENABLED( CONFIG_BIWAK_STACK_PROFILE )
+         printf("Used Stack: 0x%X\n", usedStackSize() );
+      #endif
    #endif
 
    return(0);
