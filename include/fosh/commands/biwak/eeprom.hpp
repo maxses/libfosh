@@ -23,8 +23,7 @@
 #if defined(STM32)
    #include <biwak/flash_intern.hpp>
 #else
-   #include <biwak/i2c.hpp>
-   #include <biwak/i2c_slave.h>
+   #include <biwak/flash_file.hpp>
 #endif
 
 #include <string.h>
@@ -36,6 +35,10 @@
 
 class CCommandEeprom: public CCommand
 {
+      // The fosh commands are executed 'const'
+      static char eepromData[ 0x10 ];
+      static char base64String[ 0x10 + 8 + 2 ];
+
       CFlash &m_eeprom;
       CBase64 m_base64;
       
@@ -47,7 +50,8 @@ class CCommandEeprom: public CCommand
       virtual int exec(int argc, const char *argv[]) const;
       void dump() const;
       void read( ) const;
-      void write( ) const;
+      void write( int argc, const char *argv[] ) const;
+      void info( ) const;
 };
 
 

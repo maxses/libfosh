@@ -18,21 +18,36 @@
 #include <fosh/commands/biwak/eeprom.hpp>
 #include <stdio.h>
 #include <lepto/log.h>
+#include <lepto/print.h>
 
 
 /*--- Implementation--------------------------------------------------------*/
 
 
+// The fosh commands are executed 'const'
+char CCommandEeprom::eepromData[ 0x10 ];
+char CCommandEeprom::base64String[ 0x10 + 8 + 2 ];
+
+
 int CCommandEeprom::exec(int argc, const char *argv[]) const /* virtual */
 {
-   char cdata;
-   int status;
-
    if( argc >= 2 )
    {
       if( !strcmp(argv[1], "read") )
       {
          read();
+      }
+      else if( !strcmp(argv[1], "write") )
+      {
+         write( argc, argv );
+      }
+      else if( !strcmp(argv[1], "info") )
+      {
+         info( );
+      }
+      else
+      {
+         printf("Unknown subcommand '%s'\n", argv[1]);
       }
 #if 0
       if( argv[1][0]== 'w')
@@ -64,10 +79,6 @@ int CCommandEeprom::exec(int argc, const char *argv[]) const /* virtual */
    return(0);
 }
 
-// The fosh commands are executed 'const'
-char eepromData[ 0x80 ];
-char base64String[ 0xAC ];
-
 
 void CCommandEeprom::dump( ) const
 {
@@ -89,7 +100,7 @@ void CCommandEeprom::dump( ) const
          }
          else
          {
-            printf("%02X ", cdata);
+            printf("%02X ", (int)(unsigned char)cdata);
          }
       }
       printf( " | ");
@@ -111,19 +122,98 @@ void CCommandEeprom::read( ) const
 {
    int status;
    
-   status=m_eeprom.readData( m_eeprom.getStartAddress(), eepromData
-            , sizeof(eepromData) );
-   if(status)
+   for(int i1=0; i1 < ( m_eeprom.size() / sizeof(eepromData) ); i1++)
    {
-      printf( LDS("Err %d\n", "Error: %d\n"), status);
-   }
-   else
-   {
-      m_base64.encode((uint8_t*)eepromData, 0x80, (char*)base64String, 0xac);
-      printf("%s\n", base64String);
+      status=m_eeprom.readData( m_eeprom.getStartAddress() + ( sizeof(eepromData) * i1 )
+               , eepromData , sizeof(eepromData) );
+      if(status)
+      {
+         printf( LDS("Err %d\n", "Error: %d\n"), status);
+      }
+      else
+      {
+         m_base64.encode((uint8_t*)eepromData, sizeof(eepromData), (char*)base64String, sizeof(base64String));
+         printf("%s\n", base64String);
+      }
    }
    
    return;
+}
+
+
+void CCommandEeprom::write( int argc, const char *argv[] ) const
+{
+   int status;
+   int c;
+   int inPos=0;
+   int outPos=0;
+   int size;
+
+   #if 0
+   if( argc < 4 )
+   {
+      printf("Usage: eeprom write <offset> <base64>\n");
+      return;
+   }
+   printf("Offset: 0x%X\n", strtol( argv[2], nullptr, 0 ) );
+   #endif
+
+   #if 1
+
+   while( outPos < m_eeprom.size() )
+   {
+      inPos=0;
+      do
+      {
+         while( ( c = getchar( ) ) == -1 )
+         {
+         }
+         base64String[ inPos++ ] = c;
+      }while( ( inPos < sizeof(base64String) ) && ( c != '\n' ) );
+
+      if( inPos >= sizeof(base64String) )
+      {
+         printf("Overflow\n");
+         return;
+      }
+      base64String[ --inPos ] = 0;
+      if( inPos <= 0 )
+      {
+         break;
+      }
+      // printf( "String: %s; %d\n", base64String, strlen(base64String) );
+
+      size=m_base64.decode( (char*)base64String, strlen(base64String), (uint8_t*)eepromData, sizeof(eepromData) );
+      if( size<=0)
+      {
+         lCritical( LDS("CNDe", "Could not decode") );
+         return;
+      }
+
+      status=m_eeprom.writeData( m_eeprom.getStartAddress() + outPos
+               , eepromData , sizeof(eepromData) );
+      outPos+=size;
+      if(status)
+      {
+         lCritical( LDS("WErr %d", "Write error: %d"), status);
+         return;
+      }
+
+      printf("Wrote %d bytes; Output now @0x%X\n", size, outPos);
+      // hexDump(eepromData, size);
+   }
+
+   printf("Finished\n");
+
+   #endif
+
+   return;
+}
+
+
+void CCommandEeprom::info( ) const
+{
+   printf("Size: %d Bytes\n", m_eeprom.size());
 }
 
 
