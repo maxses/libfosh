@@ -44,6 +44,7 @@ if( USE_BIWAK )
          src/commands/biwak/spi_flash.cpp
          src/commands/biwak/i2c.cpp
          src/commands/biwak/alarm.cpp
+         src/commands/biwak/eeprom.cpp
    )
 
    # I'm not interested in porting those coommands for the host at the moment
@@ -80,6 +81,7 @@ if( USE_BIWAK )
          include/fosh/commands/biwak/date.hpp
          include/fosh/commands/biwak/time.hpp
          include/fosh/commands/biwak/alarm.hpp
+         include/fosh/commands/biwak/eeprom.hpp
    )
 
    if( ( "${MCU_REV}" MATCHES "l4" ) OR ( "${MCU_PLATFORM}" MATCHES "linux" ) )
