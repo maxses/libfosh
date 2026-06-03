@@ -19,6 +19,7 @@
 
 #include <fosh/fosh.hpp>
 #include <fosh/commander.hpp>
+#include <fosh/command.hpp>
 #include <lepto/ansi.h>
 
 #if defined ( HOST )  || ! defined( STM32 )
@@ -196,6 +197,22 @@ void CFosh::handleChar(int in)
       case 0:
          // Decode not finished
          break;
+      case '\t':
+      {
+         int index;
+         const CCommand *c=m_commander.findCommand( command.data(), index );
+         if( c )
+         {
+            for(int i1=0; i1<command.length(); i1++ )
+            {
+               fputs(ANSI_DELETE " " ANSI_DELETE, stdout);
+            }
+            command=c->getName( index );
+            fputs( command.data(), stdout );
+         }
+
+         break;
+      }
       case 0x08:  // Backspace;  0x8 in Minicom
       case 0x7f:  //             0x7F in TIO
          if( command.length() )
