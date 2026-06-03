@@ -38,6 +38,7 @@ class CCommander
       CCommander();
       int registerCommands();
       int execCommand( int argc, const char *argv[] );
+      const CCommand *findCommand( const char *cmd, int &matchCommandIndex );
       int printHelp();
       void addCommand(const CCommand *command)
       {

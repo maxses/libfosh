@@ -47,7 +47,7 @@ class CCommandTest: public CCommand
 
 TEST_CASE( "Mainswitch", "[default]" )
 {
-   SECTION( "TimeToSeconds" )
+   SECTION( "matchingIndex" )
    {
       CCommandTest commandTest("name");
 
