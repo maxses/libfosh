@@ -47,34 +47,6 @@ if( USE_BIWAK )
          src/commands/biwak/eeprom.cpp
    )
 
-   # I'm not interested in porting those coommands for the host at the moment
-   if( NOT HOST )
-
-      set(
-         libfosh_SOURCES
-            ${libfosh_SOURCES}
-      )
-
-   endif( NOT HOST )
-
-endif( USE_BIWAK )
-
-if( USE_CAMPO AND USE_BIWAK )
-   set(
-      libfosh_SOURCES
-         ${libfosh_SOURCES}
-         src/commands/hwdata.cpp
-   )
-   set( 
-      libfosh_HEADERS
-         ${libfosh_HEADERS}
-         include/fosh/commands/hwdata.h
-   )
-endif( USE_CAMPO AND USE_BIWAK )
-
-
-if( USE_BIWAK )
-   
    set(
       libfosh_HEADERS
          ${libfosh_HEADERS}
@@ -95,6 +67,44 @@ if( USE_BIWAK )
          )
    endif( ( "${MCU_REV}" MATCHES "l4" ) OR ( "${MCU_PLATFORM}" MATCHES "linux" ) )
 
+   set(
+      LIBRARIES
+         ${LIBRARIES}
+         biwak
+   )
+   
+   # I'm not interested in porting those coommands for the host at the moment
+   if( NOT HOST )
+
+      set(
+         libfosh_SOURCES
+            ${libfosh_SOURCES}
+      )
+
+   endif( NOT HOST )
+
+   if( USE_HWINFO )
+      
+      set(
+         libfosh_SOURCES
+            ${libfosh_SOURCES}
+            src/commands/biwak/hwinfo.cpp
+         )
+      
+      set( 
+         libfosh_HEADERS
+            ${libfosh_HEADERS}
+            include/fosh/commands/biwak/hwinfo.hpp
+      )
+   
+      set(
+         LIBRARIES
+            ${LIBRARIES}
+            hwinfo
+      )
+
+   endif( USE_HWINFO )
+
 endif( USE_BIWAK )
 
 add_library( 
@@ -107,14 +117,8 @@ add_library(
 target_link_libraries(
    ${PROJECT_NAME}
    lepto
+   ${LIBRARIES}
 )
-
-if( USE_BIWAK )
-   target_link_libraries(
-      ${PROJECT_NAME}
-      biwak
-   )
-endif( USE_BIWAK )
 
 target_include_directories(
    ${PROJECT_NAME} 
