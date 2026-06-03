@@ -82,12 +82,20 @@ void CCommand::printHelp() const /*virtual*/
 /* static */
 bool CCommand::matches(const char *str, const char *me, bool shortcut /*=false*/ )
 {
+   #if IS_ENABLED( CONFIG_FOSH_AUTO_COMPLETION )
+
    if( ! shortcut )
    {
       return( !strcmp( str, me ) );
    }
    
    return( ! memcmp( str, me, strlen( str ) ) );
+
+   #else
+
+      return( !strcmp( str, me ) );
+
+   #endif
 }
 
 
