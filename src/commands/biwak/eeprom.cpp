@@ -159,7 +159,10 @@ void CCommandEeprom::write( int argc, const char *argv[] ) const
    #endif
 
    #if 1
-
+   
+   // Needed for stm32l0 internal eeprom; nor flash not supported.
+   m_eeprom.erasePage(m_eeprom.getStartAddress(), 1 );
+       
    while( outPos < m_eeprom.size() )
    {
       inPos=0;
@@ -169,8 +172,8 @@ void CCommandEeprom::write( int argc, const char *argv[] ) const
          {
          }
          base64String[ inPos++ ] = c;
-      }while( ( inPos < sizeof(base64String) ) && ( c != '\n' ) );
-
+      }while( ( inPos < sizeof(base64String) ) && ( c != '\n' ) && ( c != '\r' ) );
+      
       if( inPos >= sizeof(base64String) )
       {
          printf("Overflow\n");
@@ -181,17 +184,24 @@ void CCommandEeprom::write( int argc, const char *argv[] ) const
       {
          break;
       }
+      
       // printf( "String: %s; %d\n", base64String, strlen(base64String) );
 
       size=m_base64.decode( (char*)base64String, strlen(base64String), (uint8_t*)eepromData, sizeof(eepromData) );
+      
       if( size<=0)
       {
          lCritical( LDS("CNDe", "Could not decode") );
          return;
       }
+      
+      if( size > sizeof(eepromData) )
+      {
+         lFatal( LDS("UP", "Unplausible") );
+      }
 
       status=m_eeprom.writeData( m_eeprom.getStartAddress() + outPos
-               , eepromData , sizeof(eepromData) );
+               , eepromData , size );
       outPos+=size;
       if(status)
       {
