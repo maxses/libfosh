@@ -55,7 +55,13 @@ TEST_CASE( "Mainswitch", "[default]" )
       REQUIRE ( commandTest.matches( "foobar", "name", false ) == false );
       REQUIRE ( commandTest.matchingIndex( "foobar", false) == -1 );
       REQUIRE ( commandTest.matchingIndex( "nameofone", true) == -1 );
-      REQUIRE ( commandTest.matchingIndex( "nam", true) == 0 );
+      REQUIRE ( commandTest.matchingIndex( "name", true) == 0 );
+      
+      #if IS_ENABLED( CONFIG_FOSH_AUTO_COMPLETION )
+         REQUIRE ( commandTest.matchingIndex( "nam", true) == 0 );
+      #else
+         REQUIRE ( commandTest.matchingIndex( "nam", true) == -1 );
+      #endif
    }
 }; // TEST_CASE
 
