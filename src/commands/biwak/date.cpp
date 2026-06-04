@@ -6,7 +6,7 @@
  *             The MCUs RTC is used directly. For libc functions use 'time'
  *
  *  \date      20240821
- *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \author    Maximilian Seesslen <src@seesslen.net>
  *  \copyright SPDX-License-Identifier: Apache-2.0
  *
  *---------------------------------------------------------------------------*/
@@ -154,7 +154,15 @@ int CCommandDate::setDate(const char* dataStr) const // format like YYYYMMDD-hhm
             .tm_year=year-1900,
             .tm_wday=0,
             .tm_yday=0,
-            .tm_isdst=0
+            .tm_isdst=0,
+          
+            #ifdef __TM_GMTOFF
+            .tm_gmtoff=0,
+            #endif
+         
+            #ifdef __TM_ZONE
+            .tm_zone=0,
+            #endif
          };
          m_rtc.setLocalTime( ts );
       #else

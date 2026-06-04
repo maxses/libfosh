@@ -8,7 +8,7 @@
  *             Put MCU into standby.
  *
  *  \date      20251203
- *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \author    Maximilian Seesslen <src@seesslen.net>
  *  \copyright SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -37,6 +37,9 @@ class CCommandStandby: public CCommand
 
 int CCommandStandby::exec(int argc, const char *argv[]) const /* virtual */
 {
+   lUNUSED( argc );
+   lUNUSED( argv );
+   
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wvolatile"
       

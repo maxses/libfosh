@@ -16,7 +16,9 @@ set(
       src/subCommands.cpp
       src/allCommands.cpp
       src/commands/signal.cpp
+      src/commands/function.cpp
       src/commands/exit.cpp
+      src/commands/memory.cpp
 )
 
 set(
@@ -26,7 +28,9 @@ set(
       include/fosh/commands/log.hpp
       include/fosh/commands/clear.hpp
       include/fosh/commands/exit.hpp
+      include/fosh/commands/memory.hpp
       include/fosh/commands/signal.hpp
+      include/fosh/commands/function.hpp
 )
 
 if( USE_BIWAK )
@@ -40,42 +44,16 @@ if( USE_BIWAK )
          src/commands/biwak/spi_flash.cpp
          src/commands/biwak/i2c.cpp
          src/commands/biwak/alarm.cpp
+         src/commands/biwak/eeprom.cpp
    )
 
-   # I'm not interested in porting those coommands for the host at the moment
-   if( NOT HOST )
-
-      set(
-         libfosh_SOURCES
-            ${libfosh_SOURCES}
-      )
-
-   endif( NOT HOST )
-
-endif( USE_BIWAK )
-
-if( USE_CAMPO AND USE_BIWAK )
-   set(
-      libfosh_SOURCES
-         ${libfosh_SOURCES}
-         src/commands/hwdata.cpp
-   )
-   set( 
-      libfosh_HEADERS
-         ${libfosh_HEADERS}
-         include/fosh/commands/hwdata.h
-   )
-endif( USE_CAMPO AND USE_BIWAK )
-
-
-if( USE_BIWAK )
-   
    set(
       libfosh_HEADERS
          ${libfosh_HEADERS}
          include/fosh/commands/biwak/date.hpp
          include/fosh/commands/biwak/time.hpp
          include/fosh/commands/biwak/alarm.hpp
+         include/fosh/commands/biwak/eeprom.hpp
    )
 
    if( ( "${MCU_REV}" MATCHES "l4" ) OR ( "${MCU_PLATFORM}" MATCHES "linux" ) )
@@ -89,6 +67,44 @@ if( USE_BIWAK )
          )
    endif( ( "${MCU_REV}" MATCHES "l4" ) OR ( "${MCU_PLATFORM}" MATCHES "linux" ) )
 
+   set(
+      LIBRARIES
+         ${LIBRARIES}
+         biwak
+   )
+   
+   # I'm not interested in porting those coommands for the host at the moment
+   if( NOT HOST )
+
+      set(
+         libfosh_SOURCES
+            ${libfosh_SOURCES}
+      )
+
+   endif( NOT HOST )
+
+   if( USE_HWINFO )
+      
+      set(
+         libfosh_SOURCES
+            ${libfosh_SOURCES}
+            src/commands/biwak/hwinfo.cpp
+         )
+      
+      set( 
+         libfosh_HEADERS
+            ${libfosh_HEADERS}
+            include/fosh/commands/biwak/hwinfo.hpp
+      )
+   
+      set(
+         LIBRARIES
+            ${LIBRARIES}
+            hwinfo
+      )
+
+   endif( USE_HWINFO )
+
 endif( USE_BIWAK )
 
 add_library( 
@@ -101,14 +117,8 @@ add_library(
 target_link_libraries(
    ${PROJECT_NAME}
    lepto
+   ${LIBRARIES}
 )
-
-if( USE_BIWAK )
-   target_link_libraries(
-      ${PROJECT_NAME}
-      biwak
-   )
-endif( USE_BIWAK )
 
 target_include_directories(
    ${PROJECT_NAME} 
@@ -117,6 +127,12 @@ target_include_directories(
    PRIVATE
       "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
+
+if ( HOST )
+
+add_subdirectory ( tests )
+
+endif ( NOT HOST )
 
 
 #------------------------------------------------------------------------------

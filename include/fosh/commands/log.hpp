@@ -8,7 +8,7 @@
  *             Mostly for testing logging and heartbeat and demonstration.
  *
  * @date       20260416
- * @author     Maximilian Seesslen <mes@seesslen.net>
+ * @author     Maximilian Seesslen <src@seesslen.net>
  * @copyright  SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/

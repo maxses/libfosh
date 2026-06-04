@@ -6,7 +6,7 @@
  * @brief      Libfosh command for reading/seting the RTC alarm
  *
  *  \date      20251203
- *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \author    Maximilian Seesslen <src@seesslen.net>
  *  \copyright SPDX-License-Identifier: Apache-2.0
  *
  *---------------------------------------------------------------------------*/

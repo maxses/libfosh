@@ -6,7 +6,7 @@
  *             Hardcoded stuff. Avoid including this command for now.
  *
  *  \date      20240821
- *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \author    Maximilian Seesslen <src@seesslen.net>
  *  \copyright SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -254,7 +254,7 @@ int CCommandSd::commandTest( ) const
       lWarning("Error writing data: %d", sta);
       return( sta );
    }
-   if( (sta=sta=m_sd.read( m_data, 0, 1) ) )
+   if( (sta=m_sd.read( m_data, 0, 1) ) )
    {
       lWarning("Error reading data: %d", sta);
       return( sta );
@@ -288,7 +288,7 @@ void CCommandSd::printHelp() const
       cnt=printf("      %s %s %s   ", getName()
              , m_subCommands[i1].string
              , m_subCommands[i1].argumentsHelpString );
-      for(int i1=0; i1<25-cnt; i1++ )
+      for(int i2=0; i2<25-cnt; i2++ )
       {
          printf(" ");
       }

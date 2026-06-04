@@ -1,14 +1,13 @@
-#ifndef FOSH_COMMAND_EXIT_HPP
-#define FOSH_COMMAND_EXIT_HPP
+#ifndef FOSH_COMMAND_MEMORY_HPP
+#define FOSH_COMMAND_MEMORY_HPP
 /**---------------------------------------------------------------------------
  *
- * @file       exit.hpp
- * @brief      Libfosh command for exiting the shell
+ * @file       memory.hpp
+ * @brief      Libfosh command for showing memory info
  *
- *             On MCUs the behaviour depends on the systems implementation. 
- *             This command just calls exit().
+ *             E.g. Analyze heap and stack
  *
- * @date       20240821
+ * @date       20260507
  * @author     Maximilian Seesslen <src@seesslen.net>
  * @copyright  SPDX-License-Identifier: Apache-2.0
  *
@@ -24,13 +23,13 @@
 /*--- Declarations ---------------------------------------------------------*/
 
 
-class CCommandExit: public CCommand
+class CCommandMemory: public CCommand
 {
    public:
-      CCommandExit(const char *_name)
-         :CCommand( _name, "   date: get/set time and date\n" )
+      CCommandMemory(const char *_name)
+         :CCommand( _name, "Show info about memory" )
       {}
-      virtual int exec(int argc, const char *argv[]) const;
+      virtual int exec(int argc, const char *argv[]) const override;
 };
 
 

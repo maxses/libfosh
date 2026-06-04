@@ -6,7 +6,7 @@
  *             Libc functions are used.
  *
  *  \date      20240821
- *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \author    Maximilian Seesslen <src@seesslen.net>
  *  \copyright SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -72,7 +72,7 @@ int CCommandTime::setTime(const char* dataStr) const // format like YYYYMMDD-hhm
 
    if(strlen(dataStr)!=15)
    {
-      printf( "Error, size does not match; '%s', %u\n", dataStr, sizeof(dataStr) );
+      printf( "Error, size does not match; '%s', %u\n", dataStr, (unsigned int)sizeof(dataStr) );
       printf( "Usage: Time <YYYYMMDD-hhmmss>\n" );
       printf( "e.g.   Time 20170326-180800\n" );
       printf( "       Time +\"%%Y%%m%%d-%%H%%M%%S\"\n" );

@@ -8,7 +8,7 @@
  *             Just prints some informaation like JEDEC ID.
  *
  *  \date      20240821
- *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \author    Maximilian Seesslen <src@seesslen.net>
  *  \copyright SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -41,12 +41,12 @@ class CCommandSf: public CCommandSubCommands<ESfCommand>
       CFlashSpi &m_sf;
       
       const SSubCommandDesc m_subCommands[6]{
-          (SSubCommandDesc){ eInfo, "info", "Show information", 0, 0 },
+          (SSubCommandDesc){ eInfo, "info", "Show information", 0, 0, "" },
           (SSubCommandDesc){ eDump, "dump", "Dump part of erase block", 1, 1, "<block>" },
           (SSubCommandDesc){ eWrite, "write", "Write pattern to block", 1, 1, "<block>" },
-          (SSubCommandDesc){ eChipErase, "chiperase", "Erase the whole chip", 0, 0},
-          (SSubCommandDesc){ eSearch, "search", "Search for nonempty page", 0, 0},
-          (SSubCommandDesc){ eInfo, nullptr, nullptr, 0, 0 },
+          (SSubCommandDesc){ eChipErase, "chiperase", "Erase the whole chip", 0, 0, ""},
+          (SSubCommandDesc){ eSearch, "search", "Search for nonempty page", 0, 0, ""},
+          (SSubCommandDesc){ eInfo, nullptr, nullptr, 0, 0, "" },
       };
       
    public:

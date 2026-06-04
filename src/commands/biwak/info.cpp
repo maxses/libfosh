@@ -6,7 +6,7 @@
  *             Biwak info functions are calles.
  *
  *  \date      20240821
- *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \author    Maximilian Seesslen <src@seesslen.net>
  *  \copyright SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -28,6 +28,9 @@
 
 int CCommandInfo::exec(int argc, const char *argv[]) const /* virtual */
 {
+   (void)argc;
+   (void)argv;
+
    printf("\n");
 
    #if defined STM32

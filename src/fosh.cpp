@@ -8,7 +8,7 @@
  *             command.
  *
  * @date       20240821
- * @author     Maximilian Seesslen <mes@seesslen.net>
+ * @author     Maximilian Seesslen <src@seesslen.net>
  * @copyright  SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -19,6 +19,7 @@
 
 #include <fosh/fosh.hpp>
 #include <fosh/commander.hpp>
+#include <fosh/command.hpp>
 #include <lepto/ansi.h>
 
 #if defined ( HOST )  || ! defined( STM32 )
@@ -85,7 +86,7 @@ void CFosh::printPrompt()
 {
    #if USE_BIWAK
       // flush buffered logs
-      biwakEventLoop();
+      //biwakEventLoop();
    #endif
 
    #if IS_ENABLED(CONFIG_FOSH_LOGIN)
@@ -181,8 +182,10 @@ void CFosh::handleChar(int in)
             int sta=execCommand();
             if(sta)
             {
-               // Don't make it an error. Its just an command that failed.
-               lInfo( LDS("ExCo %d", "Error exec. command: %d"), sta);
+               // Don't make it an error/info. Its just an command that failed.
+               // If command does not exist, CCommander will show error.
+               // If real command has issue, it wil probably print it by itself
+               lDebug( LDS("ExCo %d", "Error exec. command: %d"), sta);
             }
          }
          command.clear();
@@ -194,6 +197,22 @@ void CFosh::handleChar(int in)
       case 0:
          // Decode not finished
          break;
+      case '\t':
+      {
+         int index;
+         const CCommand *c=m_commander.findCommand( command.data(), index );
+         if( c )
+         {
+            for(int i1=0; i1<command.length(); i1++ )
+            {
+               fputs(ANSI_DELETE " " ANSI_DELETE, stdout);
+            }
+            command=c->getName( index );
+            fputs( command.data(), stdout );
+         }
+
+         break;
+      }
       case 0x08:  // Backspace;  0x8 in Minicom
       case 0x7f:  //             0x7F in TIO
          if( command.length() )

@@ -1,10 +1,12 @@
 /**---------------------------------------------------------------------------
  *
- * @file       exit.cpp
- * @brief      Libfosh command for exiting the shell
+ * @file       function.hpp
+ * @brief      Generic Libfosh command using an function pointer
  *
- *             On MCUs the behaviour depends on the systems implementation. 
- *             This command just calls exit().
+ *             This avoids to implement 
+ *             a new class for simple commands over and over.
+ *             Example:
+ *                fosh.addCommand( new CCommandFunction("hello", "Hello world", &hello ) );
  *
  * @date       20240821
  * @author     Maximilian Seesslen <src@seesslen.net>
@@ -16,26 +18,15 @@
 /*--- Includes -------------------------------------------------------------*/
 
 
-#include <fosh/command.hpp>
-#include <fosh/commands/exit.hpp>
-#include <stdlib.h>                    // atioi(), exit()
+#include <fosh/commands/function.hpp>
 
 
 /*--- Implementation -------------------------------------------------------*/
 
 
-int CCommandExit::exec(int argc, const char *argv[]) const /* virtual */
+int CCommandFunction::exec(int argc, const char *argv[]) const /* virtual */
 {
-   int retCode=0;
-   
-   if( argc>1 )
-   {
-      retCode = atoi( argv[1] );
-   }
-   
-   exit( retCode );
-   
-   return(0);
+   return( m_pFunction(argc, argv) );
 }
 
 

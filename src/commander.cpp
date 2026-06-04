@@ -7,7 +7,7 @@
  *             The commander is asked to run a command by given strings.
  *
  *  \date      20240821
- *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \author    Maximilian Seesslen <src@seesslen.net>
  *  \copyright SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -40,11 +40,9 @@ CCommander::CCommander()
 int CCommander::execCommand( int argc, const char *argv[] )
 {
    bool executed=false;
-   int sta=-1;
-   int matchCount=0;
-   const CCommand *matchCommand=nullptr;
-   int commandIndex;
-   int matchCommandIndex;
+   int sta=22;
+   // Making this variables char instead of int saves 140 bytes on miniminutnik
+   int matchCommandIndex=-1;
 
    if(argc)
    {
@@ -52,57 +50,80 @@ int CCommander::execCommand( int argc, const char *argv[] )
       {
          return( printHelp() );
       }
-
-      // Empty command / line
-      if( (!argv[0]) || (!argv[0][0]) )
-         return( 0 );
-      
-      for (const CCommand *command : commandList)
+      const CCommand *command=findCommand(argv[0], matchCommandIndex);
+      if( command )
       {
-         if ( ( commandIndex=command->matches( argv[0] ) ) >= 0 )
-         {
-            printf( "Executing '%s'\n", argv[0] );
-            sta=command->exec( argc, argv );
-            executed=true;
-         }
-         else
-         {
-            if( ( commandIndex=command->matches( argv[0], true ) ) >= 0 )
-            {
-               matchCommand=command;
-               matchCommandIndex=commandIndex;
-               matchCount++;
-            }
-         }
+         lDebug("Executing '%s' (Shortcut)\n", matchCommand->getName( matchCommandIndex ) );
+
+         // Use full command instead of possible abbreviation
+         argv[0]=command->getName( matchCommandIndex );
+         sta=command->exec( argc, argv );
       }
-
-      if( !executed )
+      else
       {
-         if( matchCount == 1 )
-         {
-            printf("Executing '%s' (Shortcut)\n", matchCommand->getName( matchCommandIndex ) );
-            
-            // Use full command instead of possible abbreviation
-            argv[0]=matchCommand->getName( matchCommandIndex );
-            
-            sta=matchCommand->exec( argc, argv );
-            executed=true;
-         }
-         else
-         {
-            fputs( LDS("CNFC", "Could not find command '"), stdout);
-            fputs(argv[0], stdout);
-            fputs("'\n", stdout);
-         }
+         lDebug( LDS("UK CMD '%s'", "Unknown command '%s'"), argv[0]);
+         fputs( LDS("UK CMD\n", "Unknown command\n"), stdout);
       }
    }
 
    #if USE_BIWAK
-      // Flush log buffers
-      biwakEventLoop();
+      // Flush log buffers which may be created by the executed command.
+      // Otherwise the fosh prompt my get disturbed.
+      logEventLoop();
    #endif
 
    return(sta);
+}
+
+
+const CCommand *CCommander::findCommand( const char* cmd, int &matchCommandIndex )
+{
+   int commandIndex;
+   #if IS_ENABLED( CONFIG_FOSH_AUTO_COMPLETION )
+      const CCommand *matchCommand=nullptr;
+      int matchCount=0;
+   #endif
+
+   // Empty command / line
+   if( (!cmd) || (!cmd[0]) )
+   {
+      return( nullptr );
+   }
+
+   for (const CCommand *command : commandList)
+   {
+      if ( ( commandIndex=command->matchingIndex( cmd ) ) >= 0 )
+      {
+         lDebug( "Executing '%s' index %d\n", cmd, commandIndex );
+         matchCommandIndex=commandIndex;
+         return( command );
+      }
+
+      #if IS_ENABLED( CONFIG_FOSH_AUTO_COMPLETION )
+
+      else
+      {
+         if( ( commandIndex=command->matchingIndex( cmd, true ) ) >= 0 )
+         {
+            matchCommand=command;
+            matchCommandIndex=commandIndex;
+            matchCount++;
+         }
+      }
+
+      #endif // ? CONFIG_FOSH_AUTO_COMPLETION
+   }
+
+   #if IS_ENABLED( CONFIG_FOSH_AUTO_COMPLETION )
+
+   if( matchCount == 1 )
+   {
+      return(matchCommand);
+   }
+
+   #endif // ? CONFIG_FOSH_AUTO_COMPLETION
+
+   return( nullptr );
 }
 
 

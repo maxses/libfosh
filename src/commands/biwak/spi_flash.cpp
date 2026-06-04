@@ -6,7 +6,7 @@
  *             Just prints some informaation like JEDEC ID.
  *
  *  \date      20240821
- *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \author    Maximilian Seesslen <src@seesslen.net>
  *  \copyright SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -113,7 +113,7 @@ int CCommandSf::search() const
       m_sf.readData( i1 * m_sf.writePageSize(), buf, 0x100 );
       for(int i2=0; i2<0x100; i2++)
       {
-         if( buf[i2] != 0xff )
+         if( (unsigned char)buf[i2] != 0xff )
          {
             printf("Diff: Address %d\n", i1 * m_sf.writePageSize() );
             return(0);

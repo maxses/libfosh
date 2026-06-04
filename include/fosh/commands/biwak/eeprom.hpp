@@ -1,9 +1,9 @@
-#ifndef FOSH_COMMAND_I2C_HPP
-#define FOSH_COMMAND_I2C_HPP
+#ifndef FOSH_COMMAND_EEPROM_HPP
+#define FOSH_COMMAND_EEPROM_HPP
 /**---------------------------------------------------------------------------
  *
- * @file       i2c.hpp
- * @brief      Libfosh command for dumping i2c devices
+ * @file       eeprom.hpp
+ * @brief      Libfosh command for dumping eeprom devices
  *
  *             Hardcoded stuff. Avoid including this command for now.
  *
@@ -21,32 +21,39 @@
 #include <stdlib.h>
 
 #if defined(STM32)
-   //#include <arena/platform.h>
-   #include <biwak/voc.h>
-   #include <biwak/flash_spi.hpp>
+   #include <biwak/flash_intern.hpp>
 #else
-   #include <biwak/i2c.hpp>
-   #include <biwak/i2c_slave.h>
+   #include <biwak/flash_file.hpp>
 #endif
 
 #include <string.h>
+#include <lepto/base64.h>
 
 
 /*--- Declaration ----------------------------------------------------------*/
 
 
-class CCommandI2c: public CCommand
+class CCommandEeprom: public CCommand
 {
-      CI2c &m_i2c;
+      // The fosh commands are executed 'const'
+      static char eepromData[ 0x10 ];
+      static char base64String[ 0x10 + 8 + 2 ];
+
+      CFlash &m_eeprom;
+      CBase64 m_base64;
+      
    public:
-      CCommandI2c(const char *_name, CI2c &i2c)
-         :CCommand( _name, "Scan/dump devices on bus" )
-         ,m_i2c(i2c)
+      CCommandEeprom(const char *name, CFlash &eeprom)
+         :CCommand( name, "Dump EEPROMs" )
+         ,m_eeprom(eeprom)
       {}
       virtual int exec(int argc, const char *argv[]) const;
-      void dump(const CI2cSlave &slave) const;
+      void dump() const;
+      void read( ) const;
+      void write( int argc, const char *argv[] ) const;
+      void info( ) const;
 };
 
 
 /*--- Fin ------------------------------------------------------------------*/
-#endif // ? ! FOSH_COMMAND_I2C_HPP
+#endif // ? ! FOSH_COMMAND_EEPROM_HPP

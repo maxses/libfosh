@@ -9,7 +9,7 @@
  *             The commander is asked to run a command by given strings.
  *
  * @date       20240821
- * @author     Maximilian Seesslen <mes@seesslen.net>
+ * @author     Maximilian Seesslen <src@seesslen.net>
  * @copyright  SPDX-License-Identifier: Apache-2.0
  *
  *--------------------------------------------------------------------------*/
@@ -38,6 +38,7 @@ class CCommander
       CCommander();
       int registerCommands();
       int execCommand( int argc, const char *argv[] );
+      const CCommand *findCommand( const char *cmd, int &matchCommandIndex );
       int printHelp();
       void addCommand(const CCommand *command)
       {
