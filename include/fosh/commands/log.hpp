@@ -29,7 +29,7 @@ class CCommandLog: public CCommand
 {
    public:
       CCommandLog(const char *_name)
-         :CCommand( _name, "Clear screen" )
+         :CCommand( _name, "Test logging behaviour" )
       {}
       virtual int exec(int argc, const char *argv[]) const;
 };
@@ -37,25 +37,35 @@ class CCommandLog: public CCommand
 
 int CCommandLog::exec(int argc, const char *argv[]) const /* virtual */
 {
+   const char *message;
    if( argc < 2 )
    {
       lWarning("No argument specified");
       return(0);
    }
    
+   if( argc < 3 )
+   {
+      message="No Text";
+   }
+   else
+   {
+      message=argv[2];
+   }
+   
    if( ! strcmp(argv[1], "warning") )
    {
-      lWarning(argv[2]);
+      lWarning( message );
    }
    else
    if( ! strcmp(argv[1], "critical") )
    {
-      lCritical(argv[2]);
+      lCritical( message );
    }
    else
    if( ! strcmp(argv[1], "fatal") )
    {
-      lFatal(argv[2]);
+      lFatal( message );
    }
    else
    if( ! strcmp(argv[1], "calm") )

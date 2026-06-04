@@ -20,12 +20,14 @@
 #include <lepto/lepto.h>               // IS_ENABLED
 #if defined STM32
 #include <fosh/commands/biwak/date.hpp>
+#include <fosh/commands/biwak/time.hpp>
 #include <fosh/commands/biwak/reset.hpp>
 #include <fosh/commands/biwak/stop.hpp>
 #include <fosh/commands/biwak/standby.hpp>
 #include <fosh/commands/biwak/alarm.hpp>
 #include <biwak/rtc.hpp>
 #endif
+#include <fosh/commands/clear.hpp>
 #include <fosh/commands/log.hpp>
 #include <fosh/allCommands.hpp>
 
@@ -37,11 +39,13 @@ void addAllCommands( CFosh* pFosh )
 {
    #if defined STM32
       pFosh->addCommand( new CCommandDate( "date", *libcBiwakRtc ) );
+      pFosh->addCommand( new CCommandTime( "time" ) );
       pFosh->addCommand( new CCommandReset( "reset" ) );
       pFosh->addCommand( new CCommandStop( "stop" ) );
       pFosh->addCommand( new CCommandStandby( "standby" ) );
       pFosh->addCommand( new CCommandAlarm( "alarm", *libcBiwakRtc ) );
    #endif
+   pFosh->addCommand( new CCommandClear( "clear" ) );
    pFosh->addCommand( new CCommandLog( "log" ) );
 }
 

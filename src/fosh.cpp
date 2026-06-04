@@ -77,7 +77,7 @@ CFosh::CFosh()
 
 void CFosh::addCommand(const CCommand *pCommand)
 {
- m_commander.addCommand(pCommand);
+   m_commander.addCommand(pCommand);
 }
 
 

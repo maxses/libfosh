@@ -29,7 +29,7 @@ class CCommandStandby: public CCommand
 {
    public:
       CCommandStandby(const char *_name)
-         :CCommand( _name, "Stop device" )
+         :CCommand( _name, "Standby device" )
       {}
       virtual int exec(int argc, const char *argv[]) const;
 };

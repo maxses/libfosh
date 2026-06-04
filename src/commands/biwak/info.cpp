@@ -31,8 +31,8 @@ int CCommandInfo::exec(int argc, const char *argv[]) const /* virtual */
    printf("\n");
 
    #if defined STM32
-      #if ! defined(STM32G4) && ! defined(STM32L0) && ! defined(STM32F1) \
-                             && ! defined(STM32L1)
+      #if ! ( defined(STM32G4) || defined(STM32L0) || defined(STM32F1) \
+                             || defined(STM32L1) || defined(STM32F4) )
          printf("LSEDRIVE: 0x%lX \n", LL_RCC_LSE_GetDriveCapability() );
       #endif
    #endif
