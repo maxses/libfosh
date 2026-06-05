@@ -39,7 +39,6 @@ CCommander::CCommander()
 
 int CCommander::execCommand( int argc, const char *argv[] )
 {
-   bool executed=false;
    int sta=22;
    // Making this variables char instead of int saves 140 bytes on miniminutnik
    int matchCommandIndex=-1;

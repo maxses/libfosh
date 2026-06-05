@@ -122,7 +122,7 @@ void CCommandEeprom::read( ) const
 {
    int status;
    
-   for(int i1=0; i1 < ( m_eeprom.size() / sizeof(eepromData) ); i1++)
+   for(int i1=0; i1 < (int)( m_eeprom.size() / sizeof(eepromData) ); i1++)
    {
       status=m_eeprom.readData( m_eeprom.getStartAddress() + ( sizeof(eepromData) * i1 )
                , eepromData , sizeof(eepromData) );
@@ -148,6 +148,9 @@ void CCommandEeprom::write( int argc, const char *argv[] ) const
    int inPos=0;
    int outPos=0;
    int size;
+   
+   (void)argc;
+   (void)argv;
 
    #if 0
    if( argc < 4 )
@@ -172,9 +175,9 @@ void CCommandEeprom::write( int argc, const char *argv[] ) const
          {
          }
          base64String[ inPos++ ] = c;
-      }while( ( inPos < sizeof(base64String) ) && ( c != '\n' ) && ( c != '\r' ) );
+      }while( ( inPos < (int)sizeof(base64String) ) && ( c != '\n' ) && ( c != '\r' ) );
       
-      if( inPos >= sizeof(base64String) )
+      if( inPos >= (int)sizeof(base64String) )
       {
          printf("Overflow\n");
          return;
@@ -195,7 +198,7 @@ void CCommandEeprom::write( int argc, const char *argv[] ) const
          return;
       }
       
-      if( size > sizeof(eepromData) )
+      if( size > (int)sizeof(eepromData) )
       {
          lFatal( LDS("UP", "Unplausible") );
       }

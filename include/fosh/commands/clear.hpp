@@ -38,6 +38,9 @@ class CCommandClear: public CCommand
 
 int CCommandClear::exec(int argc, const char *argv[]) const /* virtual */
 {
+   (void)argc;
+   (void)argv;
+   
    printf( ANSI_RESET ANSI_CLEARSCREEN ANSI_HOME );
    return(0);
 }

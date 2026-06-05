@@ -92,7 +92,9 @@ bool CCommand::matches(const char *str, const char *me, bool shortcut /*=false*/
    return( ! memcmp( str, me, strlen( str ) ) );
 
    #else
-
+   
+      (void)shortcut;
+   
       return( !strcmp( str, me ) );
 
    #endif
