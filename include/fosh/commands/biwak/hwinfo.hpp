@@ -38,9 +38,9 @@
 /*--- Declaration ----------------------------------------------------------*/
 
 
-struct SEepromHwInfoCustom: public SEepromBoardInfo
+struct SEepromHwInfoCustom: public SEepromHwInfoBase
 {
-   char reserved[ 0x40 - sizeof(SEepromBoardInfo) - RETAIN_HEADER_SIZE ];
+   char reserved[ 0x40 - sizeof( SEepromHwInfoBase ) - RETAIN_HEADER_SIZE ];
 } HWINFO_PACKED;
 
 

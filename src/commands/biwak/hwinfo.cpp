@@ -74,7 +74,11 @@ int CCommandHwInfo::exec(int argc, const char *argv[]) const /* virtual */
       printf("ArticleID:   0x%X\n", m_hwData.main.articleId);
       printf("Boardcode:   0x%X\n", m_hwData.main.boardCode);
       // printf("Revision :   0x%X\n", m_hwData.main.boardRevision);
+      #if HWINFO_LAYOUT_MAJOR == 7
+      printf("Variant:     0x%X\n", m_hwData.config.variant);
+      #else
       printf("Variant:     0x%X\n", m_hwData.product.variant);
+      #endif
       printf("Serialno.:   0x%X\n", (int)m_hwData.production.serialNumber);
    }
    

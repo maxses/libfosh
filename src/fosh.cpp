@@ -71,6 +71,8 @@ CFosh::CFosh()
     fcntl(stdin->_fileno, F_SETFL, flags | O_NONBLOCK); // non blocking
 
    #endif
+    
+    activateEventLoop();
 
    return;
 }
