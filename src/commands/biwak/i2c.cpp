@@ -68,6 +68,36 @@ int CCommandI2c::exec(int argc, const char *argv[]) const /* virtual */
    {
       printf( "Scanning I2C devices...\n");
       slave.setAddressWidth( CI2cSlave::EAddressSize::_8Bits );
+      
+      #if IS_ENABLED( CONFIG_FOSH_PRINT_HEADERS )
+      printf("    | -0 -1 -2 -3 -4 -5 -6 -7 -8 -9 -A -B -C -D -E -F\n");
+      printf("----|------------------------------------------------\n");
+      #endif
+      int address=0;
+      
+      for(int i1=0; i1< 8; i1++)
+      {
+         printf(" %X- | ", i1);
+         for(int i2=0; i2<0x10; i2++)
+         {
+            
+            slave.setSlaveAddress( address );
+            // Reading zero bytes does not work
+            status=slave.i2cReadData( &cdata, 1);
+            if( status==0 )
+            {
+               printf("%02X ", (int)(unsigned char)address);
+            }
+            else
+            {
+               printf("-- ");
+            }
+            address++;
+         }
+         printf("\n");
+      }
+      
+      #if 0
       for(int i1=0; i1<0x7f; i1++)
       {
          slave.setSlaveAddress(i1);
@@ -78,6 +108,7 @@ int CCommandI2c::exec(int argc, const char *argv[]) const /* virtual */
             printf( "Found slave at address 0x%02x\n", i1);
          }
       }
+      #endif
    }
 
    return(0);

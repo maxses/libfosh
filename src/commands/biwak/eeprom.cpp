@@ -86,8 +86,12 @@ void CCommandEeprom::dump( ) const
    int status;
 #if 1
    printf("Dump:\n");
-   printf("    | -0 -1 -2 -3 -4 -5 -6 -7 -8 -9 -A -B -C -D -E -F\n");
-   printf("----|------------------------------------------------\n");
+   
+   #if IS_ENABLED( CONFIG_FOSH_PRINT_HEADERS )
+      printf("    | -0 -1 -2 -3 -4 -5 -6 -7 -8 -9 -A -B -C -D -E -F\n");
+      printf("----|------------------------------------------------\n");
+   #endif
+   
    for(int i1=0; i1< 8; i1++)
    {
       printf(" %X- | ", i1);
