@@ -44,9 +44,9 @@ struct SEepromHwInfoCustom: public SEepromHwInfoBase
 } HWINFO_PACKED;
 
 
-struct SEepromSettings
+struct SEepromSettingsCustom: public SEepromSettingsBase
 {
-   char reserved[ 0x20 - RETAIN_HEADER_SIZE ];
+   char reserved[ 0x20 - RETAIN_HEADER_SIZE - sizeof( SEepromSettingsBase ) ];
 } HWINFO_PACKED;
 
 
@@ -54,7 +54,7 @@ class CCommandHwInfo: public CCommand
 {
       CFlashX &m_eeprom;
       SEepromHwInfoCustom m_hwData;
-      SEepromSettings m_settings;
+      SEepromSettingsCustom m_settings;
       
       CRetain *m_pRetainHwData;
       CRetain *m_pRetainSettings;
