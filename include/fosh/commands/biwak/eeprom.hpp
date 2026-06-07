@@ -22,12 +22,21 @@
 
 #if defined(STM32)
    #include <biwak/flash_intern.hpp>
+   #include <biwak/flash_i2c.hpp>
 #else
    #include <biwak/flash_file.hpp>
 #endif
 
 #include <string.h>
 #include <lepto/base64.h>
+
+#if IS_ENABLED( CONFIG_BIWAK_I2C_RETAIN_ONLY )
+   #define CFlashX CFlashI2c
+#elif IS_ENABLED( CONFIG_BIWAK_RETAIN_INTERN_ONLY )
+   #define CFlashX CEepromIntern
+#else
+   #define CFlashX CFlash
+#endif
 
 
 /*--- Declaration ----------------------------------------------------------*/
@@ -39,11 +48,11 @@ class CCommandEeprom: public CCommand
       static char eepromData[ 0x10 ];
       static char base64String[ 0x10 + 8 + 2 ];
 
-      CFlash &m_eeprom;
+      CFlashX &m_eeprom;
       CBase64 m_base64;
       
    public:
-      CCommandEeprom(const char *name, CFlash &eeprom)
+      CCommandEeprom(const char *name, CFlashX &eeprom)
          :CCommand( name, "Dump EEPROMs" )
          ,m_eeprom(eeprom)
       {}
@@ -52,6 +61,26 @@ class CCommandEeprom: public CCommand
       void read( ) const;
       void write( int argc, const char *argv[] ) const;
       void info( ) const;
+
+      #if IS_ENABLED( CONFIG_BIWAK_I2C_RETAIN_ONLY )
+         int getStartAddress() const
+         {
+            return(0);
+         }
+         int flashSize() const
+         {
+            return( 0x80 );
+         }
+      #else
+         int getStartAddress() const
+         {
+            return( m_eeprom.getStartAddress() );
+         }
+         int flashSize() const
+         {
+            return( m_eeprom.size() );
+         }
+      #endif
 };
 
 

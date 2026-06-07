@@ -93,7 +93,7 @@ void CCommandEeprom::dump( ) const
       printf(" %X- | ", i1);
       for(int i2=0; i2<0x10; i2++)
       {
-         status=m_eeprom.readData( m_eeprom.getStartAddress() + ( (i1*0x10)+i2 ), &cdata, 1);
+         status=m_eeprom.readData( getStartAddress() + ( (i1*0x10)+i2 ), &cdata, 1);
          if(status)
          {
             printf("-- ");
@@ -106,7 +106,7 @@ void CCommandEeprom::dump( ) const
       printf( " | ");
       for(int i2=0; i2<0x10; i2++)
       {
-         m_eeprom.readData( m_eeprom.getStartAddress() + ( (i1*0x10)+i2 ), &cdata, 1);
+         m_eeprom.readData( getStartAddress() + ( (i1*0x10)+i2 ), &cdata, 1);
          {
             printf( "%c", ( ( cdata >='0' ) && ( cdata <='Z' ) ) ? cdata : '.' );
          }
@@ -122,9 +122,9 @@ void CCommandEeprom::read( ) const
 {
    int status;
    
-   for(int i1=0; i1 < (int)( m_eeprom.size() / sizeof(eepromData) ); i1++)
+   for(int i1=0; i1 < (int)( flashSize() / sizeof(eepromData) ); i1++)
    {
-      status=m_eeprom.readData( m_eeprom.getStartAddress() + ( sizeof(eepromData) * i1 )
+      status=m_eeprom.readData( getStartAddress() + ( sizeof(eepromData) * i1 )
                , eepromData , sizeof(eepromData) );
       if(status)
       {
@@ -164,9 +164,9 @@ void CCommandEeprom::write( int argc, const char *argv[] ) const
    #if 1
    
    // Needed for stm32l0 internal eeprom; nor flash not supported.
-   m_eeprom.erasePage(m_eeprom.getStartAddress(), 1 );
+   m_eeprom.erasePage( getStartAddress(), 1 );
        
-   while( outPos < m_eeprom.size() )
+   while( outPos < flashSize() )
    {
       inPos=0;
       do
@@ -203,7 +203,7 @@ void CCommandEeprom::write( int argc, const char *argv[] ) const
          lFatal( LDS("UP", "Unplausible") );
       }
 
-      status=m_eeprom.writeData( m_eeprom.getStartAddress() + outPos
+      status=m_eeprom.writeData( getStartAddress() + outPos
                , eepromData , size );
       outPos+=size;
       if(status)
@@ -226,7 +226,7 @@ void CCommandEeprom::write( int argc, const char *argv[] ) const
 
 void CCommandEeprom::info( ) const
 {
-   printf("Size: %d Bytes\n", m_eeprom.size());
+   printf("Size: %d Bytes\n", flashSize());
 }
 
 
