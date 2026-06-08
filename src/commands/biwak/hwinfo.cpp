@@ -80,6 +80,9 @@ int CCommandHwInfo::exec(int argc, const char *argv[]) const /* virtual */
       printf("Variant:     0x%X\n", m_hwData.product.variant);
       #endif
       printf("Serialno.:   0x%X\n", (int)m_hwData.production.serialNumber);
+      
+      // Just for debugging offsets:
+      // printf("             @0x%X\n", (int)&(((SEepromHwInfoCustom*)0)->production.serialNumber));
    }
    
    return(sta);
