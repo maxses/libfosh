@@ -17,7 +17,6 @@
 
 #include <fosh/command.hpp>
 #include <stdlib.h>
-#include <hwinfo/hwinfo.h>
 
 
 /*--- Declaration ----------------------------------------------------------*/
