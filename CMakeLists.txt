@@ -45,6 +45,7 @@ if( USE_BIWAK )
          src/commands/biwak/i2c.cpp
          src/commands/biwak/alarm.cpp
          src/commands/biwak/eeprom.cpp
+         src/commands/biwak/candump.cpp
    )
 
    set(
@@ -54,6 +55,7 @@ if( USE_BIWAK )
          include/fosh/commands/biwak/time.hpp
          include/fosh/commands/biwak/alarm.hpp
          include/fosh/commands/biwak/eeprom.hpp
+         include/fosh/commands/biwak/candump.hpp
    )
 
    if( ( "${MCU_REV}" MATCHES "l4" ) OR ( "${MCU_PLATFORM}" MATCHES "linux" ) )
