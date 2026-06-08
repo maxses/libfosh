@@ -34,4 +34,4 @@ class CCommandMemory: public CCommand
 
 
 /*--- Fin ------------------------------------------------------------------*/
-#endif // ? FOSH_COMMAND_EXIT_HPP
+#endif // ? FOSH_COMMAND_MEMORY_HPP

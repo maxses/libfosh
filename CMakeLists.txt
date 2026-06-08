@@ -8,6 +8,8 @@
 cmake_minimum_required(VERSION 3.11)
 project( fosh )
 
+find_package(GitVersion REQUIRED)
+
 set(
    libfosh_SOURCES
       src/fosh.cpp
@@ -19,6 +21,7 @@ set(
       src/commands/function.cpp
       src/commands/exit.cpp
       src/commands/memory.cpp
+      src/commands/version.cpp
 )
 
 set(
@@ -31,6 +34,9 @@ set(
       include/fosh/commands/memory.hpp
       include/fosh/commands/signal.hpp
       include/fosh/commands/function.hpp
+      include/fosh/commands/version.hpp
+      ${GIT_VERSION_HEADER}
+
 )
 
 if( USE_BIWAK )
