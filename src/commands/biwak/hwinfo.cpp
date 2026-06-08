@@ -40,10 +40,10 @@ CCommandHwInfo::CCommandHwInfo(const char *name, CFlashX &eeprom)
       lCritical( LDS("NVHD", "No valid hwdata") );
    }
    
-   m_pRetainSettings = new CRetain( m_eeprom, 0, 2 );
-   m_pRetainSettings->setData(&m_settings, sizeof(m_settings), 0, 0 );
+   m_pRetainConfig = new CRetain( m_eeprom, 0, 2 );
+   m_pRetainConfig->setData(&m_config, sizeof(m_config), 0, 0 );
    
-   if(m_pRetainSettings->restore()<0)
+   if(m_pRetainConfig->restore()<0)
    {
       lCritical( LDS("NVCF", "No valid settings") );
    } 
