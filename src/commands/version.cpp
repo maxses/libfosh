@@ -29,6 +29,14 @@ int CCommandVersion::exec(int argc, const char *argv[]) const /* virtual overrid
    printf( "Root project: \"" GIT_PROJECT  "\"\n");
    printf( "Version:      " GIT_SEMI "\n");
 
+   #if defined GIT_SEMI_libfosh
+      printf( "libfosh:      " GIT_SEMI_libfosh "\n");
+   #endif
+
+   #if defined GIT_SEMI_liblepto
+      printf( "liblepto:     " GIT_SEMI_liblepto "\n");
+   #endif
+
    return(0);
 }
 
