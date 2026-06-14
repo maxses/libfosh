@@ -22,6 +22,7 @@
 
 #if defined(STM32)
    #include <biwak/flash_intern.hpp>
+   #include <biwak/eeprom_intern.hpp>
    #include <biwak/flash_i2c.hpp>
 #else
    #include <biwak/flash_file.hpp>
