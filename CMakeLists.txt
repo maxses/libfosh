@@ -62,7 +62,7 @@ if( USE_BIWAK )
          include/fosh/commands/biwak/eeprom.hpp
    )
 
-   if( NOT ( "${MCU_REV}" MATCHES "l0" ) )
+if( NOT ( ( "${MCU_REV}" MATCHES "l0" ) OR ( "${MCU_REV}" MATCHES "l1" ) ) )
       set(libfosh_SOURCES
             ${libfosh_SOURCES}
             src/commands/biwak/candump.cpp
