@@ -57,6 +57,8 @@ void CCommand::printHelp(const char*name, const char*desc)
    return;
 }
 
+#if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
+
 void CCommand::printHelp() const /*virtual*/
 {
    printHelp( m_pName, m_pHelpString);
@@ -78,6 +80,7 @@ void CCommand::printHelp() const /*virtual*/
    return;
 }
 
+#endif
 
 /* static */
 bool CCommand::matches(const char *str, const char *me, bool shortcut /*=false*/ )

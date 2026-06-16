@@ -56,7 +56,9 @@ class CCommandSubCommands: public CCommand
          m_subCommands = subCommands;
          return;
       }
+      #if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
       virtual void printHelp() const override;
+      #endif
       static int optArg(int &dest, int argPos, int argc, const char *argv[]);
 };
 
@@ -93,8 +95,10 @@ int CCommandSubCommands<EEnum>::exec(int argc, const char *argv[]) const /* virt
              || ( ( argc -1 ) > m_subCommands[i1].maxArgs ) )
          {
             printf("%s: invalid amount of arguments\n", getName( 0 ));
+            #if 0
             printf("\nUsage:\n");
             printHelp();
+            #endif
             return(-1);
          }
          return ( execSubCommand(m_subCommands[i1].command, argc, argv) );
@@ -102,11 +106,14 @@ int CCommandSubCommands<EEnum>::exec(int argc, const char *argv[]) const /* virt
       }
    }
    printf("%s: unknown argument '%s'\n", getName( 0 ), argv[1]);
+#if 0
    printf("\nUsage:\n");
    printHelp();
+#endif
    return( -1 );
 }
 
+#if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
 
 template <typename EEnum>
 void CCommandSubCommands<EEnum>::printHelp() const /* virtual  */
@@ -183,6 +190,7 @@ void CCommandSubCommands<EEnum>::printHelp() const /* virtual  */
    return;
 }
 
+#endif // ? CONFIG_FOSH_PRINT_HELP
 
 template <typename EEnum>
 int CCommandSubCommands<EEnum>::optArg(int &dest, int argPos, int argc, const char *argv[])

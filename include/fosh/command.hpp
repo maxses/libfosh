@@ -69,7 +69,9 @@ class CCommand
 
       virtual int exec(int argc, const char * argv[]) const = 0;
       static void printHelp(const char*name, const char*desc);
+      #if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
       virtual void printHelp() const;
+      #endif
       static bool matches(const char *str, const char *me, bool shortcut=false);
       int matchingIndex(const char *str, bool shortcut=false) const;
       

@@ -80,6 +80,39 @@ class CFosh: public CEventLoop
       #endif
       
       void addCommand(const CCommand *pCommand);
+
+      template <typename E>
+      struct SCommandDesc{
+         E value;
+         const char* name;
+         int argc;
+      };
+
+      template <typename E>
+      static E getCommandEnum( int argc, const char* argv[], const SCommandDesc<E>* commands, int count )
+      {
+         int index=0;
+
+         if( argc <= 1 )
+         {
+            return( E::None );
+         }
+
+         for(int index=0; index<count; index++)
+         {
+            if( ! strcmp(argv[1], commands[index].name ) )
+            {
+               if( argc-2 < commands[index].argc )
+               {
+                  lDebug("Invalid args: Is: %d; should: %d\n", argc - 2, commands[index].argc);
+                  return( E::InvalidArguments );
+               }
+               return( commands[index].value );
+            }
+         }
+
+         return( E::UnknownCommand );
+      }
 };
 
 

@@ -51,7 +51,6 @@ if( USE_BIWAK )
          src/commands/biwak/i2c.cpp
          src/commands/biwak/alarm.cpp
          src/commands/biwak/eeprom.cpp
-         src/commands/biwak/candump.cpp
    )
 
    set(
@@ -61,8 +60,18 @@ if( USE_BIWAK )
          include/fosh/commands/biwak/time.hpp
          include/fosh/commands/biwak/alarm.hpp
          include/fosh/commands/biwak/eeprom.hpp
-         include/fosh/commands/biwak/candump.hpp
    )
+
+   if( NOT ( "${MCU_REV}" MATCHES "l0" ) )
+      set(libfosh_SOURCES
+            ${libfosh_SOURCES}
+            src/commands/biwak/candump.cpp
+         )
+      set(libfosh_HEADERS
+            ${libfosh_HEADERS}
+            include/fosh/commands/biwak/candump.hpp
+         )
+   endif( NOT ( "${MCU_REV}" MATCHES "l0" ) )
 
    if( ( "${MCU_REV}" MATCHES "l4" ) OR ( "${MCU_PLATFORM}" MATCHES "linux" ) )
       set(libfosh_SOURCES

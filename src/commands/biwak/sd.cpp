@@ -279,6 +279,8 @@ int CCommandSd::commandTest( ) const
    return( sta );
 }
 
+#if IS_ENABLED( CONFIG_FOSH_CEATE_HELP )
+
 void CCommandSd::printHelp() const
 {
    int cnt;
@@ -296,5 +298,6 @@ void CCommandSd::printHelp() const
    }
 }
 
+#endif
 
 /*--- Fin ------------------------------------------------------------------*/

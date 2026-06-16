@@ -39,7 +39,7 @@ class CCommander
       int registerCommands();
       int execCommand( int argc, const char *argv[] );
       const CCommand *findCommand( const char *cmd, int &matchCommandIndex );
-      int printHelp();
+      void printHelp();
       void addCommand(const CCommand *command)
       {
          commandList.push_back( command );
