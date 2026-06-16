@@ -91,8 +91,6 @@ class CFosh: public CEventLoop
       template <typename E>
       static E getCommandEnum( int argc, const char* argv[], const SCommandDesc<E>* commands, int count )
       {
-         int index=0;
-
          if( argc <= 1 )
          {
             return( E::None );
