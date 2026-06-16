@@ -72,7 +72,7 @@ class CCommandSd: public CCommand
       int commandScan( ) const;
       int commandTest( ) const;
       int optArg(int &dest, int argPos, int argc, const char *argv[]) const;
-      virtual void printHelp() const;
+      void printUsage() const;
 };
 
 

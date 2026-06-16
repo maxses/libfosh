@@ -59,8 +59,10 @@ int CCommandSd::exec(int argc, const char *argv[]) const /* virtual */
           || ( ( argc -1 ) > m_subCommands[i1].maxArgs ) )
          {
             printf("%s: invalid amount of arguments\n", getName());
+            
             printf("\nUsage:\n");
-            printHelp();
+            printUsage();
+            
             return(-1);
          }
          return ( execSubCommand(m_subCommands[i1].id, argc, argv) );
@@ -69,7 +71,7 @@ int CCommandSd::exec(int argc, const char *argv[]) const /* virtual */
    }
    printf("%s: Unknown option '%s'\n", getName(), argv[1]);
    printf("\nUsage:\n");
-   printHelp();
+   printUsage();
    return( -1 );
 }
 
@@ -279,12 +281,15 @@ int CCommandSd::commandTest( ) const
    return( sta );
 }
 
-#if IS_ENABLED( CONFIG_FOSH_CEATE_HELP )
 
-void CCommandSd::printHelp() const
+void CCommandSd::printUsage() const
 {
    int cnt;
+   
+   #if IS_ENABLED( CONFIG_FOSH_CEATE_HELP )
    CCommand::printHelp();
+   #endif
+
    for(int i1=0; i1<arraySize(m_subCommands); i1++)
    {
       cnt=printf("      %s %s %s   ", getName()
@@ -298,6 +303,5 @@ void CCommandSd::printHelp() const
    }
 }
 
-#endif
 
 /*--- Fin ------------------------------------------------------------------*/
