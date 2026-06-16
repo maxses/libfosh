@@ -57,7 +57,7 @@ void CCommand::printHelp(const char*name, const char*desc)
    return;
 }
 
-#if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
+#if IS_ENABLED( CONFIG_FOSH_CEATE_HELP )
 
 void CCommand::printHelp() const /*virtual*/
 {

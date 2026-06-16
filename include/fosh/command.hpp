@@ -54,12 +54,13 @@ class CCommand
       const char*getName( int index = 0 ) const
       {
          #if IS_ENABLED( CONFIG_FOSH_COMMAND_ALIASES )
-         if(!index)
-            return(m_pName);
-         
-         return( m_pAliases[index-1].name );
+            if(!index)
+               return(m_pName);
+
+            return( m_pAliases[index-1].name );
          #else
-         return(m_pName);
+            (void)index;
+            return(m_pName);
          #endif
       }
       const char*getHelpString() const

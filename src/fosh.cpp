@@ -323,7 +323,7 @@ int CFosh::execCommand()
 
 void CFosh::login(const void *buf, int size)
 {
-   if(!memcmp(buf, "admin", strlen("admin")))
+   if( !memcmp(buf, "admin", size) )
    {
       m_logedin=true;
       fputs( LDS("Ok\n", "Successfully logged in\n"), stdout );
