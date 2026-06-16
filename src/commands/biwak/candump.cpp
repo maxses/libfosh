@@ -38,7 +38,7 @@ int CCommandCanDump::exec(int argc, const char *argv[]) const /* virtual */
    {
       if( ! strcmp( argv[1], "-w" ) )
       {
-         SCanMessage message( 0x90, 0x0, (uint8_t*)"12345678" );
+         SCanMessage message( 90, 0, (const uint8_t*)"12345678" );
          printf("Send message\n");
          m_can.transmit( message );
       }
@@ -48,6 +48,7 @@ int CCommandCanDump::exec(int argc, const char *argv[]) const /* virtual */
       while( ( in = getc(stdin) ) == EOF )
       {
          SCanMessage *message;
+         (void)in;
          
          while( ( message=m_can.m_rxBuffer.frontEntry() ) )
          {
