@@ -1,3 +1,15 @@
+# Changes for v0.4.0
+
+* Fixed compiler warnings
+* Added class CCommandSubSignal
+* Made automatic help generation optional
+* Adopted changes of used libraries
+* Added commands 'version', 'candump', 'hwinfo', 'eeprom'
+* Implemented auto completion
+* Command 'eeprom': Support writing eeprom in fragments
+* Added generic command with function pointer
+* Added support for adding command list
+
 # Changes for v0.3.0
 
 * Avoid message in CFosh on command error
