@@ -62,7 +62,7 @@ if( USE_BIWAK )
          include/fosh/commands/biwak/eeprom.hpp
    )
 
-if( NOT ( ( "${MCU_REV}" MATCHES "l0" ) OR ( "${MCU_REV}" MATCHES "l1" ) ) )
+   if( NOT ( ( "${MCU_REV}" MATCHES "l0" ) OR ( "${MCU_REV}" MATCHES "l1" ) ) )
       set(libfosh_SOURCES
             ${libfosh_SOURCES}
             src/commands/biwak/candump.cpp
@@ -71,7 +71,7 @@ if( NOT ( ( "${MCU_REV}" MATCHES "l0" ) OR ( "${MCU_REV}" MATCHES "l1" ) ) )
             ${libfosh_HEADERS}
             include/fosh/commands/biwak/candump.hpp
          )
-   endif( NOT ( "${MCU_REV}" MATCHES "l0" ) )
+   endif( NOT ( ( "${MCU_REV}" MATCHES "l0" ) OR ( "${MCU_REV}" MATCHES "l1" ) ) )
 
    if( ( "${MCU_REV}" MATCHES "l4" ) OR ( "${MCU_PLATFORM}" MATCHES "linux" ) )
       set(libfosh_SOURCES
@@ -147,9 +147,9 @@ target_include_directories(
 
 if ( HOST )
 
-add_subdirectory ( tests )
+   add_subdirectory ( tests )
 
-endif ( NOT HOST )
+endif ( HOST )
 
 
 #------------------------------------------------------------------------------
