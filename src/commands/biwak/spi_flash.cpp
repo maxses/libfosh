@@ -74,8 +74,8 @@ int CCommandSf::dump(int argc, const char* argv[]) const
    }
    char buf[0x100];
    memset(buf, 0x12, sizeof(buf));
-   printf("Dumping block %d/0x%X\n", block, block);
-   m_sf.readData( block * m_sf.eraseBlockSize(), buf, 0x100 );
+   printf("Dumping address %d/0x%X\n", block, block);
+   m_sf.readData( block /* * m_sf.eraseBlockSize() */, buf, 0x100 );
    hexDump(buf, 0x100);
    
    return(0);
