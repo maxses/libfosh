@@ -24,6 +24,17 @@
 /*--- Implementation--------------------------------------------------------*/
 
 
+#if IS_ENABLED( CONFIG_FOSH_HWINFO_LIB )
+
+CCommandHwInfo::CCommandHwInfo(const char *name, CHwInfo& hwInfo)
+    :CCommand( name, "Dump HWInfo" )
+    ,m_hwInfo(hwInfo)
+{
+   
+}
+
+#else
+
 CCommandHwInfo::CCommandHwInfo(const char *name, CFlashX &eeprom)
    :CCommand( name, "Dump HWInfo" )
    ,m_eeprom(eeprom)
@@ -49,6 +60,7 @@ CCommandHwInfo::CCommandHwInfo(const char *name, CFlashX &eeprom)
    } 
 }
 
+#endif // ? CONFIG_FOSH_HWINFO_LIB else
 
 int CCommandHwInfo::exec(int argc, const char *argv[]) const /* virtual */
 {
@@ -58,34 +70,75 @@ int CCommandHwInfo::exec(int argc, const char *argv[]) const /* virtual */
 #if 1
    printf("Layout major: %d\n", HWINFO_LAYOUT_MAJOR);
    
+   #if IS_ENABLED( CONFIG_FOSH_HWINFO_LIB )
+   container=m_hwInfo.restoreHwInfo();
+   #else
    container=m_pRetainHwData->restore();
+   #endif
    
    if( container<0 )
    {
-      fputs("Could not load eeprom data\n", stdout);
+      fputs("Could not load eeprom hw-data\n", stdout);
       sta=-1;
    }
    else
    {
-      printf("Container:   %d\n", container);
-#endif
-      // printf("Data size:   0x%X\n", m_pRetainHwData->getTotalSize());
-      // printf("Spare:       0x%X\n", m_pRetainHwData->spare());
-      printf("ArticleID:   0x%X\n", m_hwData.main.articleId);
-      printf("Boardcode:   0x%X\n", m_hwData.main.boardCode);
-      // printf("Revision :   0x%X\n", m_hwData.main.boardRevision);
-      #if HWINFO_LAYOUT_MAJOR == 7
-      printf("Variant:     0x%X\n", (int)m_hwData.config.variant);
-      #else
-      printf("Variant:     0x%X\n", m_hwData.product.variant);
-      #endif
-      printf("Serialno.:   0x%X\n", (int)m_hwData.production.serialNumber);
-      
-      // Just for debugging offsets:
-      // printf("             @0x%X\n", (int)&(((SEepromHwInfoCustom*)0)->production.serialNumber));
+      printf("Container hwinfo:%d\n", container);
+      printHwInfo();
    }
    
+   #if IS_ENABLED( CONFIG_FOSH_HWINFO_LIB )
+      container=m_hwInfo.restoreConfig();
+   #else
+      container=m_pRetainConfig->restore();
+   #endif
+   
+   if( container<0 )
+   {
+      fputs("Could not load eeprom config\n", stdout);
+      sta=-1;
+   }
+   else
+   {
+      printf("Container config:%d\n", container);
+      printConfig();
+   }
+#endif
+      
    return(sta);
+}
+
+#if IS_ENABLED( CONFIG_FOSH_HWINFO_LIB )
+   #define m_hwData m_hwInfo.hwInfo()
+   #define m_config m_hwInfo.config()
+#else
+#endif
+
+int CCommandHwInfo::printHwInfo() const
+{
+   // printf("Data size:   0x%X\n", m_pRetainHwData->getTotalSize());
+   // printf("Spare:       0x%X\n", m_pRetainHwData->spare());
+   printf("ArticleID:   0x%X\n", m_hwData.main.articleId);
+   printf("Boardcode:   0x%X\n", m_hwData.main.boardCode);
+   // printf("Revision :   0x%X\n", m_hwData.main.boardRevision);
+   #if HWINFO_LAYOUT_MAJOR == 7
+   printf("Variant:     0x%X\n", (int)m_hwData.config.variant);
+   #else
+   printf("Variant:     0x%X\n", m_hwData.product.variant);
+   #endif
+   printf("Serialno.:   0x%X\n", (int)m_hwData.production.serialNumber);
+   
+   // Just for debugging offsets:
+   // printf("             @0x%X\n", (int)&(((SEepromHwInfoCustom*)0)->production.serialNumber));
+   return(0);
+}
+
+
+int CCommandHwInfo::printConfig() const
+{
+   printf("NodeID:      0x%X\n", m_config.nodeId );
+   
+   return(0);
 }
 
 
