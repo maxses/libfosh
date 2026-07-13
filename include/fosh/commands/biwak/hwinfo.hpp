@@ -27,11 +27,12 @@
 
 
 #if IS_ENABLED( CONFIG_BIWAK_I2C_RETAIN_ONLY )
-#define CFlashX CFlashI2c
+   #define CFlashX CFlashI2c
 #elif IS_ENABLED( CONFIG_BIWAK_RETAIN_INTERN_ONLY )
-#define CFlashX CEepromIntern
+   #define CFlashX CEepromIntern
 #else
-#define CFlashX CFlash
+   #define CFlashX CFlash
+#endif
 #endif
 
 
