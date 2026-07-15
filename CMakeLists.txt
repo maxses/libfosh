@@ -148,6 +148,7 @@ target_include_directories(
 if ( HOST )
 
    add_subdirectory ( tests )
+   add_subdirectory ( example )
 
 endif ( HOST )
 
