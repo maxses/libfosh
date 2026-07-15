@@ -27,11 +27,15 @@
 
 
 #if IS_ENABLED( CONFIG_BIWAK_I2C_RETAIN_ONLY )
-#define CFlashX CFlashI2c
+   #define CFlashX CFlashI2c
 #elif IS_ENABLED( CONFIG_BIWAK_RETAIN_INTERN_ONLY )
-#define CFlashX CEepromIntern
+   #define CFlashX CEepromIntern
 #else
-#define CFlashX CFlash
+   #define CFlashX CFlash
+#endif
+
+#if IS_ENABLED( CONFIG_FOSH_HWINFO_LIB )
+   #include <hwinfo/hwinfo.h>
 #endif
 
 
@@ -52,16 +56,28 @@ struct SEepromConfigCustom: public SEepromConfigBase
 
 class CCommandHwInfo: public CCommand
 {
+   #if IS_ENABLED( CONFIG_FOSH_HWINFO_LIB )
+      CHwInfo& m_hwInfo;
+   #else
       CFlashX &m_eeprom;
       SEepromHwInfoCustom m_hwData;
       SEepromConfigCustom m_config;
       
       CRetain *m_pRetainHwData;
       CRetain *m_pRetainConfig;
-      
+   #endif
+   
    public:
-      CCommandHwInfo(const char *name, CFlashX &eeprom);
+   
+      #if IS_ENABLED( CONFIG_FOSH_HWINFO_LIB )
+         CCommandHwInfo(const char *name, CHwInfo&);
+      #else
+         CCommandHwInfo(const char *name, CFlashX &eeprom);
+      #endif
+         
       virtual int exec(int argc, const char *argv[]) const;
+      int printHwInfo() const;
+      int printConfig() const;
       void dump() const;
 };
 
