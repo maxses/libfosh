@@ -136,7 +136,7 @@ int CCommandHwInfo::printHwInfo() const
 
 int CCommandHwInfo::printConfig() const
 {
-   printf("NodeID:      0x%X\n", (int)m_config.nodeId );
+   printf("NodeID:      0x%X\n", (unsigned int)m_config.nodeId );
    
    return(0);
 }
