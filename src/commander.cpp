@@ -53,7 +53,7 @@ int CCommander::execCommand( int argc, const char *argv[] )
       const CCommand *command=findCommand(argv[0], matchCommandIndex);
       if( command )
       {
-         lDebug("Executing '%s' (Shortcut)\n", matchCommand->getName( matchCommandIndex ) );
+         //lDebug("Executing '%s' (Shortcut)\n", matchCommand->getName( matchCommandIndex ) );
 
          // Use full command instead of possible abbreviation
          argv[0]=command->getName( matchCommandIndex );
