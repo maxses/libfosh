@@ -11,7 +11,6 @@ cmake_minimum_required(VERSION 3.11)
 project( fosh_example C CXX )
 
 
-find_package(ArenaFlash REQUIRED)
 find_package(GitVersion REQUIRED)
 
 
