@@ -1,3 +1,10 @@
+# Changes for v0.4.1
+
+* Added example
+* Optionally use libhwinfo
+* Added commands "hsi" and "mco"
+* Several minor fixes
+
 # Changes for v0.4.0
 
 * Fixed compiler warnings
