@@ -66,16 +66,16 @@ int CCommandSf::dump(int argc, const char* argv[]) const
 {
    printf("argc: %d\n", argc);
    printf("argv[0]: %s\n", argv[0]);
-   int block;
-   if( optArg( block, 1, argc, argv) < 0 )
+   int address;
+   if( optArg( address, 1, argc, argv) < 0 )
    {
       lCritical("Could not parse block");
       return(-1);
    }
    char buf[0x100];
    memset(buf, 0x12, sizeof(buf));
-   printf("Dumping address %d/0x%X\n", block, block);
-   m_sf.readData( block /* * m_sf.eraseBlockSize() */, buf, 0x100 );
+   printf("Dumping address %d/0x%X\n", address, address);
+   m_sf.readData( address /* * m_sf.eraseBlockSize() */, buf, 0x100 );
    hexDump(buf, 0x100);
    
    return(0);
@@ -84,14 +84,14 @@ int CCommandSf::dump(int argc, const char* argv[]) const
 
 int CCommandSf::write(int argc, const char* argv[]) const
 {
-   int block;
-   if( optArg( block, 1, argc, argv) < 0 )
+   int address;
+   if( optArg( address, 1, argc, argv) < 0 )
    {
       lCritical("Could not parse block");
       return(-1);
    }
-   printf("Writing block %d/0x%X\n", block, block);
-   m_sf.writeData( block * m_sf.eraseBlockSize(), "Hello World", 11 );
+   printf("Writing block %d/0x%X\n", address, address);
+   m_sf.writeData( address , "Hello World", 11 );
    
    return(0);
 }

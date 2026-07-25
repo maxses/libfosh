@@ -121,7 +121,7 @@ int CCommandHwInfo::printHwInfo() const
    printf("ArticleID:   0x%X\n", m_hwData.main.articleId);
    printf("Boardcode:   0x%X\n", m_hwData.main.boardCode);
    // printf("Revision :   0x%X\n", m_hwData.main.boardRevision);
-   #if HWINFO_LAYOUT_MAJOR == 7
+   #if ( HWINFO_LAYOUT_MAJOR == 7 ) || ( HWINFO_LAYOUT_MAJOR == 8 )
    printf("Variant:     0x%X\n", (int)m_hwData.config.variant);
    #else
    printf("Variant:     0x%X\n", m_hwData.product.variant);
