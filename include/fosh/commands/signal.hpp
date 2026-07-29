@@ -60,7 +60,7 @@ class CCommandSignal: public CCommand
       CCommandSignal(const char *_name, const char *desc, slotClass *slotObject, int (slotClass::*_methodPtr)( int, const char ** ))
           :CCommand( _name, desc )
       {
-         m_signal.connect(slotObject, _methodPtr);
+         CONNECT_MPTR( m_signal, slotObject, _methodPtr );
       }
       
       virtual int exec(int argc, const char *argv[]) const override final;
