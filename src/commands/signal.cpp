@@ -30,4 +30,10 @@ int CCommandSignal::exec(int argc, const char *argv[]) const /* virtual */
 }
 
 
+int CCommandSimpleSignal_::exec(int argc, const char *argv[]) const /* virtual */
+{
+   return( m_signal.emitSingle(argc, argv) );
+}
+
+
 /*--- Fin ------------------------------------------------------------------*/

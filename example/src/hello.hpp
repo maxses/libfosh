@@ -34,7 +34,7 @@ class CHello: public CFosh
          addCommand( new CCommandSignal(
                         "hello",
                         "Print hello world string", this, &CHello::commandHello ) );
-         addCommand( new CCommandSignal(
+         addCommand( CreateCommandSimpleSignal(
                         "key",
                         "Print ASCII codes of input", this, &CHello::commandKey ) );
       }
