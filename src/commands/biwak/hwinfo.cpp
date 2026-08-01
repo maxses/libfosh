@@ -52,7 +52,8 @@ CCommandHwInfo::CCommandHwInfo(const char *name, CFlashX &eeprom)
    }
    
    m_pRetainConfig = new CRetain( m_eeprom, 0, 2 );
-   m_pRetainConfig->setData(&m_config, sizeof(m_config), 0, 0 );
+   m_pRetainConfig->setData(&m_config, sizeof(m_config)
+                            , HWINFO_LAYOUT_MAJOR, HWINFO_LAYOUT_MINOR );
    
    if(m_pRetainConfig->restore()<0)
    {
