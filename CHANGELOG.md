@@ -1,3 +1,8 @@
+# Changes for v0.4.2
+
+* hwinfo-command: Use same layout version for config and hwinfo
+* Adopted changes of liblepto
+
 # Changes for v0.4.1
 
 * Added example
