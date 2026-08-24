@@ -63,16 +63,24 @@ class CCommandSignal: public CCommand
          CONNECT_MPTR( m_signal, slotObject, _methodPtr );
          //m_signal.connect<Method>(slotObject, _methodPtr);
       }
-      
-      virtual int exec(int argc, const char *argv[]) const override final;
+
+      #if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+         virtual int exec(int argc, const char *argv[]) const override;
+      #else
+         int exec(int argc, const char *argv[]) const;
+      #endif
 };
 
 
 #define CCommandSimpleSignal( _name, desc, slotObject, _methodPtr) \
    CCommandSimpleSignal_(_name, desc)->connect<_methodPtr>( slotObject, _methodPtr )
 
+// Simple command signals saved 168 Bytes with 3 commands on "kudu"
 #define CreateCommandSimpleSignal( _name, desc, slotObject, _methodPtr) \
    ( new CCommandSimpleSignal_(_name, desc) )->connect<_methodPtr>( slotObject, _methodPtr )
+
+#define CreateCommandSignal( _name, desc, slotObject, _methodPtr) \
+( new CCommandSignal(_name, desc, slotObject, _methodPtr ) )
 
 
 class CCommandSimpleSignal_: public CCommand
@@ -94,14 +102,27 @@ class CCommandSimpleSignal_: public CCommand
          //CONNECT_MPTR( m_signal, slotObject, _methodPtr );
          // m_signal.connect<Method>(slotObject, _methodPtr);
       }
-
+      
+      template <auto Method, class slotClass >
+      CCommandSimpleSignal_( const char *_name, const char *desc
+               , slotClass *slotObject, int (slotClass::*_methodPtr)( int, const char ** ) )
+         :CCommand( _name, desc )
+      {
+         m_signal.connect<Method>(slotObject, _methodPtr);
+      }
+      
       template <auto Method, class slotClass >
       CCommandSimpleSignal_ *connect(slotClass *slotObject, int (slotClass::*_methodPtr)( int, const char ** ) )
       {
           m_signal.connect<Method>(slotObject, _methodPtr);
           return( this );
       }
-      virtual int exec(int argc, const char *argv[]) const override final;
+
+      #if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+         virtual int exec(int argc, const char *argv[]) const override;
+      #else
+         int exec(int argc, const char *argv[]) const;
+      #endif
 };
 
 

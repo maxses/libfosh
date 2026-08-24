@@ -44,7 +44,9 @@ class CCommandFunction: public CCommand
          m_pFunction = functionPtr;
       }
       
+      #if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
       virtual int exec(int argc, const char *argv[]) const override final;
+      #endif
 };
 
 

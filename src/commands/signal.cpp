@@ -36,4 +36,18 @@ int CCommandSimpleSignal_::exec(int argc, const char *argv[]) const /* virtual *
 }
 
 
+#if IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+
+#if ! IS_ENABLED( CONFIG_FOSH_SIMPLE_SIGNAL_ONLY )
+   #error CONFIG_FOSH_PSEUDO_VIRTUAL can only be used along with CONFIG_FOSH_SIMPLE_SIGNAL_ONLY
+#endif
+
+int CCommand::exec(int argc, const char *argv[]) const
+{
+   return( static_cast<const CCommandSimpleSignal_*>(this)->exec(argc, argv) );
+}
+
+#endif // ? ! CONFIG_FOSH_PSEUDO_VIRTUAL
+
+
 /*--- Fin ------------------------------------------------------------------*/

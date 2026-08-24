@@ -141,7 +141,7 @@ void CCommander::printHelp()
 // Even if it imlpemeted in custom code, some bringup/maintenance will not work.
 __attribute__((weak)) void CCommander::printHelp()
 {
-   printf("Not imlplemented\n");
+   printf( LDS("Not imp.\n", "Not implemented\n") );
    return;
 }
 
