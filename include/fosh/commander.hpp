@@ -18,6 +18,7 @@
 /*--- Includes -------------------------------------------------------------*/
 
 
+#include <fosh/config.hpp>
 #include <lepto/list.hpp>
 
 #if ! defined CONFIG_FOSH_COMMANDS

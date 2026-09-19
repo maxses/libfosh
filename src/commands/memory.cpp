@@ -34,6 +34,9 @@ int CCommandMemory::exec(int argc, const char *argv[]) const /* virtual override
    (void)argc;
    (void)argv;
    
+   // Force GCC to actually put sp into the variable 
+   asm volatile("" : "=r"(sp));
+   
    #if defined(STM32)
       printf("End RAM   : %p\n", &_eram);
    #endif

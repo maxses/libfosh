@@ -18,6 +18,7 @@
 
 
 #include <lepto/lepto.h>
+#include <fosh/config.hpp>
 
 
 /*--- Declaration ----------------------------------------------------------*/

@@ -9,6 +9,20 @@ cmake_minimum_required(VERSION 3.11)
 project( fosh )
 
 find_package( leptoGitVersion REQUIRED )
+find_package( leptoConfigHeader REQUIRED )
+
+if ( CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR) # PROJECT_IS_TOP_LEVEL
+   add_compile_options( 
+      -Wall
+      -Werror
+      # -include ${CMAKE_CURRENT_SOURCE_DIR}/include/fosh/presets/config_full.h
+      -flto
+      -Wodr
+      -Wl,-lto
+      -Wl,-Werror
+      -Wl,-Wall
+   )
+endif()
 
 set(
    libfosh_SOURCES
@@ -36,7 +50,7 @@ set(
       include/fosh/commands/function.hpp
       include/fosh/commands/version.hpp
       ${GIT_VERSION_HEADER}
-
+      config_generated_fosh.h
 )
 
 if( USE_BIWAK )
@@ -131,10 +145,12 @@ add_library(
       ${libfosh_HEADERS}
 )
 
+add_generated_config( ${PROJECT_NAME} )
+
 target_link_libraries(
    ${PROJECT_NAME}
-   lepto
-   ${LIBRARIES}
+      lepto
+      ${LIBRARIES}
 )
 
 target_include_directories(
