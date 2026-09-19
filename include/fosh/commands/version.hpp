@@ -28,7 +28,12 @@ class CCommandVersion: public CCommand
       CCommandVersion(const char *_name)
          :CCommand( _name, "Show info git version" )
       {}
-      virtual int exec(int argc, const char *argv[]) const override;
+
+      #if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+         virtual int exec(int argc, const char *argv[]) const override;
+      #else
+         int exec(int argc, const char *argv[]) const;
+      #endif
 };
 
 

@@ -24,10 +24,14 @@
 /*--- Implementation -------------------------------------------------------*/
 
 
+#if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+
 int CCommandFunction::exec(int argc, const char *argv[]) const /* virtual */
 {
    return( m_pFunction(argc, argv) );
 }
+
+#endif // ! ? CONFIG_FOSH_PSEUDO_VIRTUAL
 
 
 /*--- Fin ------------------------------------------------------------------*/

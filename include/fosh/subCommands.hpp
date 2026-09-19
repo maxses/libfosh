@@ -49,7 +49,12 @@ class CCommandSubCommands: public CCommand
          //m_signal.connect(slotObject, _methodPtr);
       }
       
-      virtual int exec(int argc, const char *argv[]) const override final;
+      #if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+         virtual int exec(int argc, const char *argv[]) const override final;
+      #else
+         int exec(int argc, const char *argv[]) const;
+      #endif
+      
       virtual int execSubCommand(EEnum command, int argc, const char *argv[]) const = 0;
       void setSubcommands(const SSubCommandDesc* subCommands)
       {

@@ -32,7 +32,11 @@ class CCommand
 {
    private:
       const char *m_pName;
+       
+      #if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
       const char *m_pHelpString;
+      #endif
+      
       //struct SAlias;
       //const char **m_pAliases;
       
@@ -63,12 +67,18 @@ class CCommand
             return(m_pName);
          #endif
       }
+      #if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
       const char*getHelpString() const
       {
          return(m_pHelpString);
       }
-
-      virtual int exec(int argc, const char * argv[]) const = 0;
+      #endif // ? CONFIG_FOSH_PRINT_HELP
+      
+      #if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+         virtual int exec(int argc, const char *argv[]) const;
+      #else
+         int exec(int argc, const char *argv[]) const;
+      #endif
 
       static void printHelp(const char*name, const char*desc);
       
