@@ -8,7 +8,7 @@
 cmake_minimum_required(VERSION 3.11)
 project( fosh )
 
-find_package(GitVersion REQUIRED)
+find_package( leptoGitVersion REQUIRED )
 
 set(
    libfosh_SOURCES
