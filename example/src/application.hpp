@@ -38,7 +38,7 @@ class CApplication
       int exec()
           __attribute__ (( noreturn ))
         #if ! IS_ENABLED( CONFIG_LEPTO_GLOBAL_EVENT_LOOP )
-          __attribute__(( error("Please enable CONFIG_LEPTO_GLOBAL_EVENT_LOOP in lepto configuration") ))
+          __attribute__(( warning("Please enable CONFIG_LEPTO_GLOBAL_EVENT_LOOP in lepto configuration") ))
         #endif
       ;
 };
