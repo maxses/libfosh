@@ -15,6 +15,7 @@
 /*--- Includes -------------------------------------------------------------*/
 
 
+#include <biwak/biwak.h>         // config
 #include <fosh/command.hpp>
 #include <stdlib.h>
 #include <hwinfo/hwinfo.h>

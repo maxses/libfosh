@@ -8,7 +8,8 @@
 cmake_minimum_required(VERSION 3.11)
 project( fosh )
 
-find_package(GitVersion REQUIRED)
+find_package( GitVersion REQUIRED )
+find_package( ConfigHeader REQUIRED )
 
 set(
    libfosh_SOURCES
@@ -36,7 +37,7 @@ set(
       include/fosh/commands/function.hpp
       include/fosh/commands/version.hpp
       ${GIT_VERSION_HEADER}
-
+      config_generated_fosh.h
 )
 
 if( USE_BIWAK )
@@ -130,6 +131,16 @@ add_library(
       ${libfosh_SOURCES}
       ${libfosh_HEADERS}
 )
+
+if ( COMMON_CONFIG_HEADER )
+   set ( FOSH_CONFIG_HEADER "${COMMON_CONFIG_HEADER}" )
+elseif( NOT FOSH_CONFIG_HEADER )
+   set ( FOSH_CONFIG_HEADER "include/fosh/presets/config_full.h" )
+endif()
+
+add_generated_config( ${PROJECT_NAME} ) 
+# fosh ${FOSH_CONFIG_HEADER} )
+# use_generated_config( fosh )
 
 target_link_libraries(
    ${PROJECT_NAME}
