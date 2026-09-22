@@ -19,6 +19,7 @@
 /*--- Includes -------------------------------------------------------------*/
 
 
+#include <fosh/config.hpp>
 #include <lepto/string.hpp>
 #include <lepto/signal.hpp>
 #include <lepto/eventLoop.hpp>

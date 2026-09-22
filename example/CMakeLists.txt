@@ -1,6 +1,6 @@
 #------------------------------------------------------------------------------
 #
-# \brief        CMakeLists.txt file for "CANIO"
+# \brief        CMakeLists.txt file for fosh example
 #
 #------------------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ cmake_minimum_required(VERSION 3.11)
 project( fosh_example C CXX )
 
 
-find_package(GitVersion REQUIRED)
+find_package( leptoGitVersion REQUIRED )
 
 
 add_executable(
