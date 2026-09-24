@@ -68,6 +68,9 @@ int CCommandHwInfo::exec(int argc, const char *argv[]) const /* virtual */
    int container;
    int sta=0;
 
+   (void)argc;
+   (void)argv;
+
 #if 1
    printf("Layout major: %d\n", HWINFO_LAYOUT_MAJOR);
    

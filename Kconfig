@@ -1,0 +1,58 @@
+#------------------------------------------------------------------------------
+#
+# \brief Kconfig file for libfosh
+#
+#------------------------------------------------------------------------------
+
+
+menu "libfosh"
+
+
+config FOSH_PRINT_HEADERS
+    bool "Print nice headers in commands like I2C. On very small devices you may abandon this."
+    default n if SMALL
+    default y
+
+config FOSH_COMMAND_HISTORY
+    bool "TBD"
+    default n if SMALL
+    default y
+
+config FOSH_COMMAND_ALIASES
+    bool "Support aliases for commands. The exec function can check for argv[0]"
+    default n if SMALL
+    default y
+
+config FOSH_COMMANDS
+    int "Number of commands that are supported when list expansion is disabled."
+    default 7
+
+config FOSH_CEATE_HELP
+    bool "Automatically provide an help command. TBD: FOSH_PRINT_HELP vs. FOSH_CENERATE_HELP"
+    default n if SMALL
+    default y
+
+config FOSH_PRINT_HELP
+    bool "Automatically provide an help command"
+    default n if SMALL
+    default y
+
+config FOSH_CATCH_ANSI
+    bool "Detect and filter control inputs like cursor movements. On very small devices you may abandon this."
+    default n if SMALL
+    default y
+
+config FOSH_LOGIN
+    bool "Provide a simple login at start. This can be usefull as first barrier when garbage input (touchable UART lines) could harm."
+    default n
+
+config FOSH_AUTO_COMPLETION
+    bool "Support auto completion via tab. Also abbreviation can be entered"
+    default n if SMALL
+    default y
+
+
+endmenu
+
+
+#--- Fin ----------------------------------------------------------------------
