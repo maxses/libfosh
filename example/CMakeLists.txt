@@ -20,6 +20,13 @@ add_executable(
       ${GIT_VERSION_HEADER}
 )
 
+target_compile_definitions(
+   ${PROJECT_NAME}
+   PRIVATE
+      # Do not throw error because of wrong configuration
+      CONFIG_FOSH_EXAMPLES=1
+)
+
 target_link_libraries(
    ${PROJECT_NAME}
       fosh
