@@ -156,11 +156,11 @@ int CCommandDate::setDate(const char* dataStr) const // format like YYYYMMDD-hhm
             .tm_yday=0,
             .tm_isdst=0,
           
-            #ifdef __TM_GMTOFF
+            #if defined __TM_GMTOFF || defined __USE_MISC
             .tm_gmtoff=0,
             #endif
          
-            #ifdef __TM_ZONE
+            #if defined __TM_ZONE || defined __USE_MISC
             .tm_zone=0,
             #endif
          };

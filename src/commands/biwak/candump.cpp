@@ -16,6 +16,8 @@
 #include <fosh/commands/biwak/candump.hpp>
 #include <lepto/log.h>
 #include <biwak/can.hpp>
+#include <cstdio>
+#include <string.h>
 
 
 /*--- Implementation--------------------------------------------------------*/
@@ -36,7 +38,7 @@ int CCommandCanDump::exec(int argc, const char *argv[]) const /* virtual */
    {
       if( ! strcmp( argv[1], "-w" ) )
       {
-         SCanMessage message;
+         SCanMessage message( 90, 0, (const uint8_t*)"12345678" );
          printf("Send message\n");
          m_can.transmit( message );
       }
@@ -46,10 +48,11 @@ int CCommandCanDump::exec(int argc, const char *argv[]) const /* virtual */
       while( ( in = getc(stdin) ) == EOF )
       {
          SCanMessage *message;
+         (void)in;
          
          while( ( message=m_can.m_rxBuffer.frontEntry() ) )
          {
-            printf( "  can0  %3X   [%d]  ", message->getId(), message->getLen() );
+            printf( "  can0  %3X   [%d]  ", (unsigned int)message->getId(), message->getLen() );
             for(int i1=0; i1<message->getLen(); i1++)
             {
                printf( "%02X ", message->getData()[i1]);

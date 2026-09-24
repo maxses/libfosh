@@ -18,6 +18,7 @@
 
 
 #include <lepto/lepto.h>
+#include <fosh/config.hpp>
 
 
 /*--- Declaration ----------------------------------------------------------*/
@@ -32,7 +33,11 @@ class CCommand
 {
    private:
       const char *m_pName;
+       
+      #if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
       const char *m_pHelpString;
+      #endif
+      
       //struct SAlias;
       //const char **m_pAliases;
       
@@ -54,22 +59,33 @@ class CCommand
       const char*getName( int index = 0 ) const
       {
          #if IS_ENABLED( CONFIG_FOSH_COMMAND_ALIASES )
-         if(!index)
-            return(m_pName);
-         
-         return( m_pAliases[index-1].name );
+            if(!index)
+               return(m_pName);
+
+            return( m_pAliases[index-1].name );
          #else
-         return(m_pName);
+            (void)index;
+            return(m_pName);
          #endif
       }
+      #if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
       const char*getHelpString() const
       {
          return(m_pHelpString);
       }
+      #endif // ? CONFIG_FOSH_PRINT_HELP
+      
+      #if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+         virtual int exec(int argc, const char *argv[]) const;
+      #else
+         int exec(int argc, const char *argv[]) const;
+      #endif
 
-      virtual int exec(int argc, const char * argv[]) const = 0;
       static void printHelp(const char*name, const char*desc);
+      
+      #if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
       virtual void printHelp() const;
+      #endif
       static bool matches(const char *str, const char *me, bool shortcut=false);
       int matchingIndex(const char *str, bool shortcut=false) const;
       

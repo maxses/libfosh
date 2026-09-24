@@ -47,12 +47,13 @@ int CCommander::execCommand( int argc, const char *argv[] )
    {
       if( !memcmp(argv[0], "help", strlen(argv[0])) )
       {
-         return( printHelp() );
+         printHelp();
+         return( 0 );
       }
       const CCommand *command=findCommand(argv[0], matchCommandIndex);
       if( command )
       {
-         lDebug("Executing '%s' (Shortcut)\n", matchCommand->getName( matchCommandIndex ) );
+         //lDebug("Executing '%s' (Shortcut)\n", matchCommand->getName( matchCommandIndex ) );
 
          // Use full command instead of possible abbreviation
          argv[0]=command->getName( matchCommandIndex );
@@ -125,16 +126,26 @@ const CCommand *CCommander::findCommand( const char* cmd, int &matchCommandIndex
    return( nullptr );
 }
 
+#if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
 
-int CCommander::printHelp()
+void CCommander::printHelp()
 {
    for (const CCommand *command : commandList)
    {
       command->printHelp(  );
    }
-
-   return(0);
 }
+
+#else // ? CONFIG_FOSH_PRINT_HELP
+
+// Even if it imlpemeted in custom code, some bringup/maintenance will not work.
+__attribute__((weak)) void CCommander::printHelp()
+{
+   printf( LDS("Not imp.\n", "Not implemented\n") );
+   return;
+}
+
+#endif // ? CONFIG_FOSH_PRINT_HELP Else
 
 
 /*--- Fin ------------------------------------------------------------------*/

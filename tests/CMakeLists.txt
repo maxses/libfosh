@@ -25,14 +25,12 @@ add_executable(
    test_command.cpp
 )
 
-
 target_link_libraries(
    ${PROJECT_NAME}
    fosh
    lepto
-   ${CATCH_LIBRARY}
+   ${CATCH2_TARGET}
 )
-
 
 add_test(
    NAME fosh_tests

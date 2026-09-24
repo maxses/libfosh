@@ -42,8 +42,8 @@ class CCommandSf: public CCommandSubCommands<ESfCommand>
       
       const SSubCommandDesc m_subCommands[6]{
           (SSubCommandDesc){ eInfo, "info", "Show information", 0, 0, "" },
-          (SSubCommandDesc){ eDump, "dump", "Dump part of erase block", 1, 1, "<block>" },
-          (SSubCommandDesc){ eWrite, "write", "Write pattern to block", 1, 1, "<block>" },
+          (SSubCommandDesc){ eDump, "dump", "Dump part of erase block", 1, 1, "<address>" },
+          (SSubCommandDesc){ eWrite, "write", "Write pattern to block", 1, 1, "<address>" },
           (SSubCommandDesc){ eChipErase, "chiperase", "Erase the whole chip", 0, 0, ""},
           (SSubCommandDesc){ eSearch, "search", "Search for nonempty page", 0, 0, ""},
           (SSubCommandDesc){ eInfo, nullptr, nullptr, 0, 0, "" },

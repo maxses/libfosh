@@ -19,10 +19,17 @@
 /*--- Includes -------------------------------------------------------------*/
 
 
+#include <fosh/config.hpp>
 #include <lepto/string.hpp>
 #include <lepto/signal.hpp>
 #include <lepto/eventLoop.hpp>
 #include <fosh/commander.hpp>
+
+#if defined( FOSH_GENERATED_CONFIG )
+   #include "config_generated_fosh.h"
+#else
+   #include <fosh/config.h>
+#endif
 
 // Default behaviour: use login prompt
 #if ! defined( CONFIG_FOSH_LOGIN )
@@ -80,6 +87,37 @@ class CFosh: public CEventLoop
       #endif
       
       void addCommand(const CCommand *pCommand);
+
+      template <typename E>
+      struct SCommandDesc{
+         E value;
+         const char* name;
+         int argc;
+      };
+
+      template <typename E>
+      static E getCommandEnum( int argc, const char* argv[], const SCommandDesc<E>* commands, int count )
+      {
+         if( argc <= 1 )
+         {
+            return( E::None );
+         }
+
+         for(int index=0; index<count; index++)
+         {
+            if( ! strcmp(argv[1], commands[index].name ) )
+            {
+               if( argc-2 < commands[index].argc )
+               {
+                  lDebug("Invalid args: Is: %d; should: %d\n", argc - 2, commands[index].argc);
+                  return( E::InvalidArguments );
+               }
+               return( commands[index].value );
+            }
+         }
+
+         return( E::UnknownCommand );
+      }
 };
 
 

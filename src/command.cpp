@@ -26,7 +26,9 @@
 
 CCommand::CCommand(const char *name, const char *helpString)
    :m_pName(name)
-   ,m_pHelpString(helpString)
+    #if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
+      ,m_pHelpString(helpString)
+   #endif
    #if IS_ENABLED( CONFIG_FOSH_COMMAND_ALIASES )
       ,m_pAliases(nullptr)
    #endif
@@ -34,6 +36,14 @@ CCommand::CCommand(const char *name, const char *helpString)
 
 }
 
+#if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+int CCommand::exec(int argc, const char *argv[]) const
+{
+   return(0);
+}
+#endif
+
+#if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
 
 /* static */
 void CCommand::printHelp(const char*name, const char*desc)
@@ -57,6 +67,10 @@ void CCommand::printHelp(const char*name, const char*desc)
    return;
 }
 
+#endif // ? CONFIG_FOSH_PRINT_HELP
+
+#if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
+
 void CCommand::printHelp() const /*virtual*/
 {
    printHelp( m_pName, m_pHelpString);
@@ -78,6 +92,7 @@ void CCommand::printHelp() const /*virtual*/
    return;
 }
 
+#endif
 
 /* static */
 bool CCommand::matches(const char *str, const char *me, bool shortcut /*=false*/ )
