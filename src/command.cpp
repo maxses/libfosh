@@ -39,6 +39,8 @@ CCommand::CCommand(const char *name, const char *helpString)
 #if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
 int CCommand::exec(int argc, const char *argv[]) const
 {
+   (void)argc;
+   (void)argv;
    return(0);
 }
 #endif
