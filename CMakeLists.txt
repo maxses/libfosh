@@ -36,6 +36,8 @@ set(
       src/commands/exit.cpp
       src/commands/memory.cpp
       src/commands/version.cpp
+      src/commands/clear.cpp
+      src/commands/log.cpp
 )
 
 set(
@@ -65,6 +67,7 @@ if( USE_BIWAK )
          src/commands/biwak/i2c.cpp
          src/commands/biwak/alarm.cpp
          src/commands/biwak/eeprom.cpp
+         src/commands/biwak/reset.cpp
    )
 
    set(

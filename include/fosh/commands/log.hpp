@@ -35,51 +35,5 @@ class CCommandLog: public CCommand
 };
 
 
-int CCommandLog::exec(int argc, const char *argv[]) const /* virtual */
-{
-   const char *message;
-   if( argc < 2 )
-   {
-      lWarning("No argument specified");
-      return(0);
-   }
-   
-   if( argc < 3 )
-   {
-      message="No Text";
-   }
-   else
-   {
-      message=argv[2];
-   }
-   
-   if( ! strcmp(argv[1], "warning") )
-   {
-      lWarning( message );
-   }
-   else
-   if( ! strcmp(argv[1], "critical") )
-   {
-      lCritical( message );
-   }
-   else
-   if( ! strcmp(argv[1], "fatal") )
-   {
-      lFatal( message );
-   }
-   else
-   if( ! strcmp(argv[1], "calm") )
-   {
-      lLog(ELogCategory::Calm | 0, "Calm down" );
-   }
-   else
-   {
-      lWarning("Unknown log category: %s", argv[1]);
-   }
-
-   return(0);
-}
-
-
 /*--- Fin ------------------------------------------------------------------*/
 #endif // ? FOSH_COMMAND_CLEAR_HPP
