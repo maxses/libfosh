@@ -43,8 +43,13 @@ class CCommand;
 
 
 CFosh::CFosh()
+   :m_command(
+          #if ! IS_ENABLED( CONFIG_LEPTO_LIST_RESIZABLE )
+            16
+          #endif
+   )
    #if IS_ENABLED(CONFIG_FOSH_LOGIN)
-   :m_logedin(false)
+   ,m_logedin(false)
    #endif
 {
    // Disable ECHO on Linux systems
@@ -179,7 +184,7 @@ void CFosh::handleChar(int in)
       case '\n':     // Linux
       {
          fputs("\r\n", stdout);
-         if( command.length() )
+         if( m_command.length() )
          {
             int sta=execCommand();
             if(sta)
@@ -190,7 +195,7 @@ void CFosh::handleChar(int in)
                lDebug( LDS("ExCo %d", "Error exec. command: %d"), sta);
             }
          }
-         command.clear();
+         m_command.clear();
          printPrompt();
          break;
       }
@@ -202,24 +207,24 @@ void CFosh::handleChar(int in)
       case '\t':
       {
          int index;
-         const CCommand *c=m_commander.findCommand( command.data(), index );
+         const CCommand *c=m_commander.findCommand( m_command.data(), index );
          if( c )
          {
-            for(int i1=0; i1<command.length(); i1++ )
+            for(int i1=0; i1<m_command.length(); i1++ )
             {
                fputs(ANSI_DELETE " " ANSI_DELETE, stdout);
             }
-            command=c->getName( index );
-            fputs( command.data(), stdout );
+            m_command=c->getName( index );
+            fputs( m_command.data(), stdout );
          }
 
          break;
       }
       case 0x08:  // Backspace;  0x8 in Minicom
       case 0x7f:  //             0x7F in TIO
-         if( command.length() )
+         if( m_command.length() )
          {
-            command.remove(-1,1);
+            m_command.remove(-1,1);
             fputs(ANSI_DELETE " " ANSI_DELETE, stdout);
          }
          break;
@@ -231,7 +236,7 @@ void CFosh::handleChar(int in)
       }
       #endif // CONFIG_FOSH_CATCH_ANSI
       default:
-         command+=(char)in;
+         m_command+=(char)in;
          putchar(in);
    };
    return;
@@ -293,7 +298,7 @@ void CFosh::handleAnsi(int in)
 
 int CFosh::execCommand()
 {
-   char *line=command.data();
+   char *line=m_command.data();
    
    #if IS_ENABLED(CONFIG_FOSH_LOGIN)
    if(!m_logedin)

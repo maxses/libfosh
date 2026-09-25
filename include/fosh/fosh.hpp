@@ -38,7 +38,7 @@ class CCommand;
 class CFosh: public CEventLoop
 {
    private:
-      CString command;
+      CString m_command;
       CCommander m_commander;
       
       #if IS_ENABLED(CONFIG_FOSH_LOGIN)
