@@ -303,7 +303,7 @@ int CFosh::execCommand()
    #if IS_ENABLED(CONFIG_FOSH_LOGIN)
    if(!m_logedin)
    {
-      login( command.data(), strlen(command.data()) );
+      login( m_command.data(), strlen(m_command.data()) );
       return(0);
    }
    #endif

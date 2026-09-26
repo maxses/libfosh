@@ -31,6 +31,7 @@
    #include <fosh/commands/biwak/spi_flash.hpp>
    #include <fosh/commands/biwak/i2c.hpp>
    #include <fosh/commands/biwak/sd.hpp>
+   #include <fosh/commands/biwak/eeprom.hpp>
    #include <biwak/rtc.hpp>
 #else
    #include <fosh/commands/exit.hpp>
