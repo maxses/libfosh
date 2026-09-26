@@ -35,7 +35,12 @@ class CApplication
          leptoInit();
       }
       
-      int exec() __attribute__ (( noreturn ));
+      int exec()
+          __attribute__ (( noreturn ))
+        #if ! IS_ENABLED( CONFIG_LEPTO_GLOBAL_EVENT_LOOP ) && ! IS_ENABLED( CONFIG_FOSH_EXAMPLES )
+          __attribute__(( error("Please enable CONFIG_LEPTO_GLOBAL_EVENT_LOOP in lepto configuration") ))
+        #endif
+      ;
 };
 
 

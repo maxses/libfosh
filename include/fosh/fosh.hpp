@@ -19,10 +19,17 @@
 /*--- Includes -------------------------------------------------------------*/
 
 
+#include <fosh/config.hpp>
 #include <lepto/string.hpp>
 #include <lepto/signal.hpp>
 #include <lepto/eventLoop.hpp>
 #include <fosh/commander.hpp>
+
+#if defined( FOSH_GENERATED_CONFIG )
+   #include "config_generated_fosh.h"
+#else
+   #include <fosh/config.h>
+#endif
 
 // Default behaviour: use login prompt
 #if ! defined( CONFIG_FOSH_LOGIN )

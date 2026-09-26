@@ -16,6 +16,7 @@
 #include <fosh/command.hpp>
 #include <fosh/commands/version.hpp>
 #include <stdio.h>                    // printf
+#include "git_version.h"
 
 
 /*--- Implementation -------------------------------------------------------*/

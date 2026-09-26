@@ -18,8 +18,6 @@
 
 
 #include <fosh/command.hpp>
-#include <stdlib.h>
-#include <HALWrapper/stm32_hal.h>
 
 
 /*--- Declaration ----------------------------------------------------------*/
@@ -33,16 +31,6 @@ class CCommandReset: public CCommand
       {}
       virtual int exec(int argc, const char *argv[]) const;
 };
-
-
-int CCommandReset::exec(int argc, const char *argv[]) const /* virtual */
-{
-   lUNUSED( argc );
-   lUNUSED( argv );
-   
-   NVIC_SystemReset();
-   return(0);
-}
 
 
 /*--- Fin ------------------------------------------------------------------*/

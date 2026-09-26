@@ -1,11 +1,9 @@
-#ifndef FOSH_COMMAND_CLEAR_HPP
-#define FOSH_COMMAND_CLEAR_HPP
 /**---------------------------------------------------------------------------
  *
- * @file       clear.hpp
+ * @file       clear.cpp
  * @brief      Libfosh command for clearing the screen
  *
- *             Ansi commands are used so this command works also on UART 
+ *             Ansi commands are used so this command works also on UART
  *             terminals.
  *
  * @date       20240821
@@ -19,22 +17,20 @@
 
 
 #include <fosh/command.hpp>
-#include <stdio.h>
-#include <lepto/ansi.h>
+#include <fosh/commands/clear.hpp>
 
 
-/*--- Declaration ----------------------------------------------------------*/
+/*--- Implementation -------------------------------------------------------*/
 
 
-class CCommandClear: public CCommand
+int CCommandClear::exec(int argc, const char *argv[]) const /* virtual */
 {
-   public:
-      CCommandClear(const char *_name)
-         :CCommand( _name, "Clear screen" )
-      {}
-      virtual int exec(int argc, const char *argv[]) const;
-};
+   (void)argc;
+   (void)argv;
+
+   printf( ANSI_RESET ANSI_CLEARSCREEN ANSI_HOME );
+   return(0);
+}
 
 
 /*--- Fin ------------------------------------------------------------------*/
-#endif // ? FOSH_COMMAND_CLEAR_HPP

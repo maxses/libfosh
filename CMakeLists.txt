@@ -8,7 +8,21 @@
 cmake_minimum_required(VERSION 3.11)
 project( fosh )
 
-find_package(GitVersion REQUIRED)
+find_package( leptoGitVersion REQUIRED )
+find_package( leptoConfigHeader REQUIRED )
+
+if ( CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR) # PROJECT_IS_TOP_LEVEL
+   add_compile_options( 
+      -Wall
+      -Werror
+      # -include ${CMAKE_CURRENT_SOURCE_DIR}/include/fosh/presets/config_full.h
+      -flto
+      -Wodr
+      -Wl,-lto
+      -Wl,-Werror
+      -Wl,-Wall
+   )
+endif()
 
 set(
    libfosh_SOURCES
@@ -22,6 +36,8 @@ set(
       src/commands/exit.cpp
       src/commands/memory.cpp
       src/commands/version.cpp
+      src/commands/clear.cpp
+      src/commands/log.cpp
 )
 
 set(
@@ -36,7 +52,7 @@ set(
       include/fosh/commands/function.hpp
       include/fosh/commands/version.hpp
       ${GIT_VERSION_HEADER}
-
+      config_generated_fosh.h
 )
 
 if( USE_BIWAK )
@@ -51,6 +67,7 @@ if( USE_BIWAK )
          src/commands/biwak/i2c.cpp
          src/commands/biwak/alarm.cpp
          src/commands/biwak/eeprom.cpp
+         src/commands/biwak/reset.cpp
    )
 
    set(
@@ -61,6 +78,23 @@ if( USE_BIWAK )
          include/fosh/commands/biwak/alarm.hpp
          include/fosh/commands/biwak/eeprom.hpp
    )
+
+   if( NOT HOST )
+      set(
+         libfosh_SOURCES
+            ${libfosh_SOURCES}
+            src/commands/biwak/stop.cpp
+            src/commands/biwak/standby.cpp
+      )
+   
+      set(
+         libfosh_HEADERS
+            ${libfosh_HEADERS}
+            include/fosh/commands/biwak/stop.hpp
+            include/fosh/commands/biwak/standby.hpp
+      )
+      
+   endif( NOT HOST )
 
    if( NOT ( ( "${MCU_REV}" MATCHES "l0" ) OR ( "${MCU_REV}" MATCHES "l1" ) ) )
       set(libfosh_SOURCES
@@ -131,10 +165,20 @@ add_library(
       ${libfosh_HEADERS}
 )
 
+if ( COMMON_CONFIG_HEADER )
+   set ( FOSH_CONFIG_HEADER "${COMMON_CONFIG_HEADER}" )
+elseif( NOT FOSH_CONFIG_HEADER )
+   set ( FOSH_CONFIG_HEADER "include/fosh/presets/config_full.h" )
+endif()
+
+add_generated_config( ${PROJECT_NAME} ) 
+# fosh ${FOSH_CONFIG_HEADER} )
+# use_generated_config( fosh )
+
 target_link_libraries(
    ${PROJECT_NAME}
-   lepto
-   ${LIBRARIES}
+      lepto
+      ${LIBRARIES}
 )
 
 target_include_directories(

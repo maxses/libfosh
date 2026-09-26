@@ -16,7 +16,6 @@
 
 
 #include <fosh/command.hpp>
-#include "git_version.h"
 
 
 /*--- Declarations ---------------------------------------------------------*/
