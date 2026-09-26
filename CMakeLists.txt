@@ -79,6 +79,23 @@ if( USE_BIWAK )
          include/fosh/commands/biwak/eeprom.hpp
    )
 
+   if( NOT HOST )
+      set(
+         libfosh_SOURCES
+            ${libfosh_SOURCES}
+            src/commands/biwak/stop.cpp
+            src/commands/biwak/standby.cpp
+      )
+   
+      set(
+         libfosh_HEADERS
+            ${libfosh_HEADERS}
+            include/fosh/commands/biwak/stop.hpp
+            include/fosh/commands/biwak/standby.hpp
+      )
+      
+   endif( NOT HOST )
+
    if( NOT ( ( "${MCU_REV}" MATCHES "l0" ) OR ( "${MCU_REV}" MATCHES "l1" ) ) )
       set(libfosh_SOURCES
             ${libfosh_SOURCES}
