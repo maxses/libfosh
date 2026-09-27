@@ -10,6 +10,12 @@ project( fosh )
 
 enable_testing()
 
+if (CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR) # PROJECT_IS_TOP_LEVEL
+
+    set ( CMAKE_CXX_STANDARD 20 )
+
+endif()
+
 find_package( leptoGitVersion REQUIRED )
 find_package( leptoConfigHeader REQUIRED )
 
