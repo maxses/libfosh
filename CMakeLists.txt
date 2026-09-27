@@ -8,6 +8,8 @@
 cmake_minimum_required(VERSION 3.11)
 project( fosh )
 
+enable_testing()
+
 find_package( leptoGitVersion REQUIRED )
 find_package( leptoConfigHeader REQUIRED )
 
