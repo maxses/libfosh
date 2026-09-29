@@ -1,3 +1,12 @@
+# Changes for v0.5.0
+
+* Fixed several compiler warnings
+* Added Kconfig
+* Use generated config header
+* Added preset config headers
+* Shrink binary size
+* Adopted changes of liblepto
+
 # Changes for v0.4.2
 
 * hwinfo-command: Use same layout version for config and hwinfo
