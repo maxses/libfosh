@@ -21,9 +21,8 @@
 #include <stdlib.h>
 
 #if defined(STM32)
-   //#include <arena/platform.h>
-   #include <biwak/voc.h>
-   #include <biwak/flash_spi.hpp>
+   #include <biwak/i2c.hpp>
+   #include <biwak/i2c_slave.h>
 #else
    #include <biwak/i2c.hpp>
    #include <biwak/i2c_slave.h>

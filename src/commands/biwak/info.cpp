@@ -17,6 +17,7 @@
 
 #include <fosh/commands/biwak/info.hpp>
 #include <biwak/biwak.h>
+#include <biwak/info.h>
 
 #if defined STM32
 #include <HALWrapper/stm32_rcc.h>
