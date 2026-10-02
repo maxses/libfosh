@@ -15,8 +15,10 @@
 /*--- Includes -------------------------------------------------------------*/
 
 
-#if defined( FOSH_GENERATED_CONFIG )
+#if defined ( FOSH_GENERATED_CONFIG )
    #include "config_generated_fosh.h"
+#elif defined ( FOSH_COPIED_CONFIG )
+   #include <fosh/presets/config_full.h>
 #else
    #include <fosh/config.h>
 #endif

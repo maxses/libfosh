@@ -16,8 +16,10 @@ if (CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR) # PROJECT_IS_TOP_LEVEL
 
 endif()
 
-find_package( leptoGitVersion REQUIRED )
-find_package( leptoConfigHeader REQUIRED )
+if( USE_LEPTO )
+   find_package( leptoGitVersion REQUIRED )
+   find_package( leptoConfigHeader REQUIRED )
+endif( USE_LEPTO )
 
 if ( CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR) # PROJECT_IS_TOP_LEVEL
    add_compile_options( 
@@ -60,7 +62,7 @@ set(
       include/fosh/commands/function.hpp
       include/fosh/commands/version.hpp
       ${GIT_VERSION_HEADER}
-      config_generated_fosh.h
+      # config_generated_fosh.h
 )
 
 if( USE_BIWAK )
@@ -179,9 +181,23 @@ elseif( NOT FOSH_CONFIG_HEADER )
    set ( FOSH_CONFIG_HEADER "include/fosh/presets/config_full.h" )
 endif()
 
-add_generated_config( ${PROJECT_NAME} ) 
-# fosh ${FOSH_CONFIG_HEADER} )
-# use_generated_config( fosh )
+
+if( USE_LEPTO )
+
+   add_generated_config( ${PROJECT_NAME} )
+   # fosh ${FOSH_CONFIG_HEADER} )
+   # use_generated_config( fosh )
+
+else( USE_LEPTO )
+   string(TOUPPER ${PROJECT_NAME} PROJECT)
+   target_compile_definitions(
+      ${PROJECT_NAME}
+      PUBLIC
+         -D${PROJECT}_COPIED_CONFIG
+   )
+   # message( FATAL_ERROR "### ${PROJECT}_COPIED_CONFIG" )
+endif( USE_LEPTO )
+
 
 target_link_libraries(
    ${PROJECT_NAME}

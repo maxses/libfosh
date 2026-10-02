@@ -11,8 +11,11 @@ cmake_minimum_required(VERSION 3.11)
 project( fosh_example C CXX )
 
 
-find_package( leptoGitVersion REQUIRED )
+if( USE_LEPTO )
 
+   find_package( leptoGitVersion REQUIRED )
+
+endif( USE_LEPTO )
 
 add_executable(
    ${PROJECT_NAME}
