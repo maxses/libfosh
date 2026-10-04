@@ -22,7 +22,6 @@
 
 #if defined(STM32)
    //#include <arena/platform.h>
-   #include <biwak/voc.h>
    #include <biwak/flash_spi.hpp>
    #include <biwak/rcc.h>
    #include <HALWrapper/stm32_rcc.h>
