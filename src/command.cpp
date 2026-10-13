@@ -106,7 +106,17 @@ bool CCommand::matches(const char *str, const char *me, bool shortcut /*=false*/
       return( !strcmp( str, me ) );
    }
    
-   return( ! memcmp( str, me, strlen( str ) ) );
+   unsigned int length=strlen( str );
+   
+   // Keep compiler happy
+   if( length <= strlen( me ) )
+   {
+      return( ! memcmp( str, me, length ) );
+   }
+   else
+   {
+      return( false );
+   }
 
    #else
    
