@@ -62,8 +62,15 @@ set(
       include/fosh/commands/function.hpp
       include/fosh/commands/version.hpp
       ${GIT_VERSION_HEADER}
-      # config_generated_fosh.h
 )
+
+if( USE_LEPTO )
+   set(
+      libfosh_HEADERS
+      ${libfosh_HEADERS}
+      config_generated_fosh.h
+   )
+endif()
 
 if( USE_BIWAK )
 
