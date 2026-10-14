@@ -17,6 +17,7 @@
 #define CONFIG_FOSH_PRINT_HELP                     1
 #define CONFIG_FOSH_AUTO_COMPLETION                1
 
+#define FOSH_CONFIGURED                            1
 
 //---fin-----------------------------------------------------------------------
 #endif // ? ! FOSH_PRESET_CONFIG_FULL_H
