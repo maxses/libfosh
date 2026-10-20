@@ -19,7 +19,7 @@ endif()
 if( TARGET lepto )
    find_package( leptoGitVersion REQUIRED )
    find_package( leptoConfigHeader REQUIRED )
-endif( USE_LEPTO )
+endif( TARGET lepto )
 
 if ( CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR ) # PROJECT_IS_TOP_LEVEL
    add_compile_options( 
@@ -201,11 +201,11 @@ else( TARGET lepto )
 
    find_library( lepto lepto )
 
-   if( NOT LEPTO )
+   if( NOT lepto )
       message( FATAL_ERROR "Please install liblepto to your sysroot or add it as subdirectory to your project" )
    else()
-      message( "Found: ${LEPTO}")
-   endif( NOT LEPTO )
+      message( "Found liblepto: ${lepto}")
+   endif( NOT lepto )
 
    add_custom_command(
       OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/fosh/config_generated_local.h
