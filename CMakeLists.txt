@@ -16,16 +16,15 @@ if (CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR) # PROJECT_IS_TOP_LEVEL
 
 endif()
 
-if( USE_LEPTO )
+if( TARGET lepto )
    find_package( leptoGitVersion REQUIRED )
    find_package( leptoConfigHeader REQUIRED )
 endif( USE_LEPTO )
 
-if ( CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR) # PROJECT_IS_TOP_LEVEL
+if ( CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR ) # PROJECT_IS_TOP_LEVEL
    add_compile_options( 
       -Wall
       -Werror
-      # -include ${CMAKE_CURRENT_SOURCE_DIR}/include/fosh/presets/config_full.h
       -flto
       -Wodr
       -Wl,-lto
@@ -45,7 +44,6 @@ set(
       src/commands/function.cpp
       src/commands/exit.cpp
       src/commands/memory.cpp
-      src/commands/version.cpp
       src/commands/clear.cpp
       src/commands/log.cpp
 )
@@ -60,19 +58,25 @@ set(
       include/fosh/commands/memory.hpp
       include/fosh/commands/signal.hpp
       include/fosh/commands/function.hpp
-      include/fosh/commands/version.hpp
+      
       ${GIT_VERSION_HEADER}
 )
 
-if( USE_LEPTO )
+if( TARGET lepto )
+   set(
+      libfosh_SOURCES
+      ${libfosh_SOURCES}
+      src/commands/version.cpp
+   )
    set(
       libfosh_HEADERS
       ${libfosh_HEADERS}
       config_generated_fosh.h
+      include/fosh/commands/version.hpp
    )
-endif()
+endif( TARGET lepto )
 
-if( USE_BIWAK )
+if( TARGET biwak )
 
    set(
       libfosh_SOURCES
@@ -141,7 +145,7 @@ if( USE_BIWAK )
          biwak
    )
    
-   # I'm not interested in porting those coommands for the host at the moment
+   # I'm not interested in porting those commands for the host at the moment
    if( NOT HOST )
 
       set(
@@ -189,22 +193,59 @@ elseif( NOT FOSH_CONFIG_HEADER )
 endif()
 
 
-if( USE_LEPTO )
+if( TARGET lepto )
 
    add_generated_config( ${PROJECT_NAME} )
-   # fosh ${FOSH_CONFIG_HEADER} )
-   # use_generated_config( fosh )
 
-else( USE_LEPTO )
-   string(TOUPPER ${PROJECT_NAME} PROJECT)
-   target_compile_definitions(
-      ${PROJECT_NAME}
-      PUBLIC
-         -D${PROJECT}_COPIED_CONFIG
+else( TARGET lepto )
+
+   find_library( lepto lepto )
+
+   if( NOT LEPTO )
+      message( FATAL_ERROR "Please install liblepto to your sysroot or add it as subdirectory to your project" )
+   else()
+      message( "Found: ${LEPTO}")
+   endif( NOT LEPTO )
+
+   add_custom_command(
+      OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/fosh/config_generated_local.h
+      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+      COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/fosh
+      COMMAND cp include/fosh/presets/config_full.h ${CMAKE_CURRENT_BINARY_DIR}/fosh/config_generated_local.h
+      DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/fosh/presets/config_full.h
    )
-   # message( FATAL_ERROR "### ${PROJECT}_COPIED_CONFIG" )
-endif( USE_LEPTO )
 
+   add_custom_target(
+      generate_fosh_config
+      DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/fosh/config_generated_local.h
+   )
+
+   add_dependencies( fosh generate_fosh_config )
+
+   target_include_directories (
+      fosh
+      PUBLIC
+         ${CMAKE_CURRENT_BINARY_DIR}
+   )
+
+   install (
+      FILES
+         ${CMAKE_CURRENT_BINARY_DIR}/fosh/config_generated_local.h
+      DESTINATION
+         include/fosh
+      RENAME
+         config_generated.h
+      COMPONENT Devel
+   )
+
+endif( TARGET lepto )
+
+# Don't you dare to use a sysroots config header!
+target_compile_definitions(
+   ${PROJECT_NAME}
+   PUBLIC
+      -DFOSH_LOCAL_CONFIG
+)
 
 target_link_libraries(
    ${PROJECT_NAME}
@@ -218,6 +259,32 @@ target_include_directories(
       "${CMAKE_CURRENT_SOURCE_DIR}/include"
    PRIVATE
       "${CMAKE_CURRENT_SOURCE_DIR}/include"
+)
+
+install(
+   TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Targets
+   LIBRARY DESTINATION lib
+   ARCHIVE DESTINATION lib
+   RUNTIME DESTINATION bin
+   INCLUDES DESTINATION include
+)
+
+# Includes have to be installed manually for some reason
+install(
+   DIRECTORY
+      include/fosh
+   DESTINATION
+      include
+   COMPONENT Devel
+   PATTERN
+      include/fosh/presets EXCLUDE
+)
+
+install (
+   FILES
+      LICENSE
+   DESTINATION
+      share/doc/libfosh
 )
 
 if ( HOST )

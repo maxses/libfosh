@@ -32,7 +32,7 @@
 #include <fosh/commands/memory.hpp>
 #endif
 
-#include <fosh/commands/version.hpp>
+//#include <fosh/commands/version.hpp>
 #include <fosh/commands/clear.hpp>
 #include <fosh/commands/log.hpp>
 #include <fosh/allCommands.hpp>
@@ -55,7 +55,8 @@ void addAllCommands( CFosh* pFosh )
       pFosh->addCommand( new CCommandExit( "exit" ) );
    #endif
 
-   pFosh->addCommand( new CCommandVersion( "version" ) );
+   // The version commands depends on being compiled along with lepto as submodule
+   //pFosh->addCommand( new CCommandVersion( "version" ) );
    pFosh->addCommand( new CCommandClear( "clear" ) );
    pFosh->addCommand( new CCommandLog( "log" ) );
 }

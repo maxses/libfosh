@@ -25,10 +25,12 @@
 #include <lepto/eventLoop.hpp>
 #include <fosh/commander.hpp>
 
-#if defined( FOSH_GENERATED_CONFIG )
+#if 0
+#if defined( FOSH_LOCAL_CONFIG )
    #include "config_generated_fosh.h"
 #else
    #include <fosh/config.h>
+#endif
 #endif
 
 // Default behaviour: use login prompt

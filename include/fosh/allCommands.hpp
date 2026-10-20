@@ -38,7 +38,6 @@
    #include <fosh/commands/memory.hpp>
 #endif
 
-#include <fosh/commands/version.hpp>
 #include <fosh/commands/clear.hpp>
 #include <fosh/commands/log.hpp>
 #include <fosh/commands/signal.hpp>
