@@ -71,7 +71,7 @@ if( TARGET lepto )
    set(
       libfosh_HEADERS
       ${libfosh_HEADERS}
-      config_generated_fosh.h
+      # config_generated_fosh.h
       include/fosh/commands/version.hpp
    )
 endif( TARGET lepto )
@@ -177,7 +177,7 @@ if( TARGET biwak )
 
    endif( USE_HWINFO )
 
-endif( USE_BIWAK )
+endif( TARGET biwak )
 
 add_library( 
    ${PROJECT_NAME} 
