@@ -71,7 +71,6 @@ if( TARGET lepto )
    set(
       libfosh_HEADERS
       ${libfosh_HEADERS}
-      fosh/config_generated_local.h
       include/fosh/commands/version.hpp
    )
 endif( TARGET lepto )
