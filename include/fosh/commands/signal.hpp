@@ -60,7 +60,7 @@ class CCommandSignal: public CCommand
       CCommandSignal(const char *_name, const char *desc, slotClass *slotObject, int (slotClass::*_methodPtr)( int, const char ** ))
           :CCommand( _name, desc )
       {
-         CONNECT_MPTR( m_signal, slotObject, _methodPtr );
+         lConnectMethodPtr( m_signal, slotObject, _methodPtr );
          //m_signal.connect<Method>(slotObject, _methodPtr);
       }
 
