@@ -3,10 +3,9 @@
  * @file       function.hpp
  * @brief      Generic Libfosh command using an function pointer
  *
- *             This avoids to implement 
- *             a new class for simple commands over and over.
- *             Example:
- *                fosh.addCommand( new CCommandFunction("hello", "Hello world", &hello ) );
+ * This avoids to implement a new class for simple commands over and over.
+ * Example:
+ *    fosh.addCommand( new CCommandFunction("hello", "Hello world", &hello ) );
  *
  * @date       20240821
  * @author     Maximilian Seesslen <src@seesslen.net>
