@@ -9,6 +9,7 @@ build
 *.pro.user
 *.a
 *.bck
+CMakeLists.txt.user
 
 doc/html
 doc/latex
