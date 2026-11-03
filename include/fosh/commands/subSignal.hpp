@@ -86,7 +86,7 @@ class CCommandSubSignal: public CCommand
                         , int (slotClass::*_methodPtr)( EEnum, int, const char ** ))
           :CCommand( _name, desc )
       {
-         m_signal.connect(slotObject, _methodPtr);
+         lConnectMethodPtr( m_signal, slotObject, _methodPtr );
       }
       
       virtual int exec(int argc, const char *argv[]) const override final;
@@ -97,9 +97,9 @@ class CCommandSubSignal: public CCommand
          m_subCommandCount = subCommandCount;
          return;
       }
-
+      #if IS_ENABLED( CONFIG_FOSH_CEATE_HELP )
       #if IS_ENABLED( CONFIG_FOSH_PRINT_HELP )
-      virtual void printHelp() override
+      virtual void printHelp() const override
       {
          CCommand::printHelp();
          int index=0;
@@ -119,7 +119,8 @@ class CCommandSubSignal: public CCommand
             index++;
          }
       }
-      #endif
+      #endif // ? CONFIG_FOSH_PRINT_HELP
+      #endif // ? CONFIG_FOSH_CEATE_HELP
 };
 
 

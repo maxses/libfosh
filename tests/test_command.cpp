@@ -50,7 +50,7 @@ class CCommandTest: public CCommand
 };
 
 
-TEST_CASE( "Mainswitch", "[default]" )
+TEST_CASE( "Matching", "[default]" )
 {
    SECTION( "matchingIndex" )
    {

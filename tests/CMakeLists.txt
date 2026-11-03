@@ -23,6 +23,8 @@ add_executable(
    ${PROJECT_NAME}
    test_main.cpp
    test_command.cpp
+   test_commandSignal.cpp
+   test_commandSubSignal.cpp
 )
 
 target_link_libraries(

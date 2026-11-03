@@ -120,6 +120,11 @@ class CFosh: public CEventLoop
 
          return( E::UnknownCommand );
       }
+
+      CCommander& commander()
+      {
+         return(m_commander);
+      }
 };
 
 
