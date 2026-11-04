@@ -67,7 +67,7 @@ class CCommandSubSignal: public CCommand
        *             new CCommandSignal( "hello", "Hello World"
        *                      , &hello )
        */
-      CCommandSignal(const char *_name, const char *desc, int (*_funcPtr)( int, const char *[] ))
+      CCommandSubSignal(const char *_name, const char *desc, int (*_funcPtr)( int, const char *[] ))
          :CCommand( _name, desc )
       {
          m_signal.connect( _funcPtr);
