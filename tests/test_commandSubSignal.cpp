@@ -29,7 +29,6 @@
 
 //---Implementation-----------------------------------------------------------
 
-#if 1
 
 class CMyApplication2
 {
@@ -45,7 +44,7 @@ class CMyApplication2
          InvalidArguments
       };
 
-      CMyApplication2(const char* name)
+      CMyApplication2()
       {
          
       }
@@ -93,7 +92,7 @@ TEST_CASE( "subSignal", "[default]" )
        */
 
       CFosh m_fosh;
-      CMyApplication2 myApplication("name");
+      CMyApplication2 myApplication;
 
       CCommandSubSignal<CMyApplication2::ECommand>* subSignal;
       subSignal=new CCommandSubSignal<CMyApplication2::ECommand>(
@@ -151,6 +150,5 @@ TEST_CASE( "subSignal", "[default]" )
    }
 }; // TEST_CASE
 
-#endif
 
 //---fin----------------------------------------------------------------------

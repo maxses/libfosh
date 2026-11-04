@@ -34,7 +34,7 @@ class CMyApplication
 {
       int m_executionCounter=0;
    public:
-      CMyApplication(const char* name)
+      CMyApplication()
       {
          
       }
@@ -66,7 +66,7 @@ TEST_CASE( "Signal", "[default]" )
        */
 
       CFosh m_fosh;
-      CMyApplication myApplication("name");
+      CMyApplication myApplication;
 
       m_fosh.addCommand( new CCommandSignal( "commandName", "Description",
          &myApplication, &CMyApplication::exec ) );
