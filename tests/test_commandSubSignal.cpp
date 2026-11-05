@@ -118,13 +118,12 @@ TEST_CASE( "subSignal", "[default]" )
       subSignal=new CCommandSubSignal<CMyApplication2::ECommand>(
                "commandSub", "Description", &myApplication, &CMyApplication2::exec );
       
-      subSignal->setSubcommands(
-          ( CCommandSubSignal<CMyApplication2::ECommand>::SSubCommandDesc[] ) {
-            { CMyApplication2::ECommand::command1, "command1", 0, 0, },
-            { CMyApplication2::ECommand::command2, "command2", 0, 0, },
-          }
-          , 2
-      );
+      CCommandSubSignal<CMyApplication2::ECommand>::SSubCommandDesc commands[]{
+          { CMyApplication2::ECommand::command1, "command1", 0, 0, },
+          { CMyApplication2::ECommand::command2, "command2", 0, 0, },
+          };
+          
+      subSignal->setSubcommands( commands, sizeof(commands) / sizeof(commands[0]) );
       
       m_fosh.addCommand( subSignal );
 
