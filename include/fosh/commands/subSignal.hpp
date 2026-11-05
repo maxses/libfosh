@@ -89,7 +89,11 @@ class CCommandSubSignal: public CCommand
          lConnectMethodPtr( m_signal, slotObject, _methodPtr );
       }
       
-      virtual int exec(int argc, const char *argv[]) const override final;
+      #if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+         virtual int exec(int argc, const char *argv[]) const override final;
+      #else
+         int exec(int argc, const char *argv[]) const;
+      #endif
 
       void setSubcommands(const SSubCommandDesc* subCommands, int subCommandCount)
       {
