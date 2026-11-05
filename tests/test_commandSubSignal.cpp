@@ -30,6 +30,9 @@
 //---Implementation-----------------------------------------------------------
 
 
+// CONFIG_FOSH_PSEUDO_VIRTUAL only supports CONFIG_FOSH_SIMPLE_SIGNAL_ONLY
+#if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+
 class CMyApplication2
 {
       int m_executionCounter[2]{};
@@ -81,6 +84,23 @@ class CMyApplication2
       }
 };
 
+#if IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL ) && 0
+
+int CCommand::exec(int argc, const char *argv[]) const
+{
+   const CCommandSignal *c1;
+   const CCommandSubSignal<CMyApplication2::ECommand> *c2;
+   
+   if( ( c1 = dynamic_cast<const CCommandSignal*>(this) ) )
+      return( c1->exec(argc, argv) );
+   
+   if( ( c2 = dynamic_cast<const CCommandSubSignal<CMyApplication2::ECommand>*>(this) ) )
+      return( c2->exec(argc, argv) );
+   
+   return( -1 );
+}
+
+#endif
 
 TEST_CASE( "subSignal", "[default]" )
 {
@@ -149,6 +169,9 @@ TEST_CASE( "subSignal", "[default]" )
       
    }
 }; // TEST_CASE
+
+
+#endif // ? ! CONFIG_FOSH_PSEUDO_VIRTUAL
 
 
 //---fin----------------------------------------------------------------------

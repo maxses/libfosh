@@ -30,6 +30,9 @@
 //---Implementation-----------------------------------------------------------
 
 
+// CONFIG_FOSH_PSEUDO_VIRTUAL only supports CONFIG_FOSH_SIMPLE_SIGNAL_ONLY
+#if ! IS_ENABLED( CONFIG_FOSH_PSEUDO_VIRTUAL )
+
 class CMyApplication
 {
       int m_executionCounter=0;
@@ -85,6 +88,8 @@ TEST_CASE( "Signal", "[default]" )
       REQUIRE ( myApplication.executionCounter() == 1 );
    }
 }; // TEST_CASE
+
+#endif // ? ! CONFIG_FOSH_PSEUDO_VIRTUAL
 
 
 //---fin----------------------------------------------------------------------
